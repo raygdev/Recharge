@@ -47,7 +47,48 @@ table {
 	border-spacing: 0;
 }
 
+:root{
+	font-size:16px;
+	--white:#FFF;
+	--black:#131313;
+	--magenta:#D854EE;
+	--indigo:#44E2E2;
+	--green:#54A044;
+	--XVIPX:1rem;
+
+}
+
+/*Utility Classes*/
+.white-text{color:var(--white)}
+.black-text{color:var(--black)}
+
+.text-shadow-black{text-shadow: 2px 3px 1px #131313;}
+
+.flex{display:flex}
+.flex-column{flex-direction: column;}
+.flex-center{justify-content: center;}
+.flex-align-center{align-items: center;}
+.flex-wrap{flex-wrap: wrap;}
+
+.icon{
+	width:2rem;
+	height:2rem;
+}
+
 .--app{
 	min-width:100vw;
 	min-height:100vh;
+}
+
+.--dashboard{
+	background-color:rgba(0, 0, 0, .2);
+	padding:var(--XVIPX);
+}
+
+.--auth-container{
+	margin-left:auto;
+}
+
+.--auth-data{
+	align-self: flex-end;
 }

@@ -6,6 +6,7 @@ import AppBG from './src/images/app-bg.jpg'
 
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
+const weatherIconEl = document.getElementById('weather-container')
 
 const weatherAccess = '9575f3355ae129dc91424b5712a7695e'
 let weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?'
@@ -19,6 +20,7 @@ function renderBackground(){
 let myValue = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE)
 
 function renderTime(elem){
+  elem.textContent = myValue;
   setInterval(()=>{
     myValue = DateTime.now().toLocaleString(DateTime.TIME_SIMPLE)
     elem.textContent = myValue;
@@ -36,16 +38,16 @@ function renderWeather(){
               return res.json()
           })
           .then(data=>{
-             console.log(data)
-             //<img id="--weather-condition-icon" src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}/>
+            //  console.log(data)
+             let img = document.createElement('img')
+             img.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+             img.id = '--weather-condition-icon'
+             img.classList.add('icon')
+
+             weatherIconEl.appendChild(img)
           })
           .catch(err=>{
-              let defaultWeather = {
-                  name:'Not Available',
-                  weather:[
-                      {icon:''}
-                  ]
-              }
+              weatherIconEl.remove()
           })
   })
 }
