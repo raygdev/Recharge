@@ -9,7 +9,7 @@
   <body>
     <div id="app" class="--app">
       <header>
-        <div id="dashboard" class="--dashboard flex flex-align-center white-text text-shadow-black">
+        <div id="dashboard" class="--dashboard flex flex-align-center white-text">
           <div id="time-container">
             <p id="time-data"></p>
           </div>
@@ -17,10 +17,15 @@
             
           </div>
           <div id="auth-container" class="--auth-container flex">
-            <img id='auth-img' class="icon" src="./src/images/FilePerson.png" alt="sign in person">
-            <p id="auth-data" class="--auth-data">Sign In</p>
+            <a href="">
+              <img id='auth-img' class="icon" src="./src/images/FilePerson.png" alt="sign in person">
+              <span id="auth-data" class="--auth-data secondary-font XXPT">Sign In</span>
+            </a>       
           </div>
         </div>
+        <nav id="tech-nav" class="--tech-nav flex flex-center">
+
+        </nav>
       </header>
     </div>
     <script type="module" src="/main.js"></script>

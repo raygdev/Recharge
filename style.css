@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Roboto+Condensed:wght@400;700&display=swap');
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -49,20 +51,35 @@ table {
 
 :root{
 	font-size:16px;
+	font-family:'Roboto Condensed', sans-serif;
 	--white:#FFF;
 	--black:#131313;
 	--magenta:#D854EE;
 	--indigo:#44E2E2;
 	--green:#54A044;
 	--XVIPX:1rem;
+	--XXPX:1.25rem;
+	--secondary-font:'Oswald', sans-serif;
+}
 
+a{
+	color:#FFF;
+	text-decoration: none;
+}
+
+a:hover{
+	cursor: pointer;
+	color:var(--magenta);
 }
 
 /*Utility Classes*/
+.secondary-font{font-family:var(--secondary-font)}
+.XXPT{font-size:var(--XXPX)}
+
+.medium{font-weight:500;}
+.bold{font-weight:700;}
 .white-text{color:var(--white)}
 .black-text{color:var(--black)}
-
-.text-shadow-black{text-shadow: 2px 3px 1px #131313;}
 
 .flex{display:flex}
 .flex-column{flex-direction: column;}
@@ -91,4 +108,26 @@ table {
 
 .--auth-data{
 	align-self: flex-end;
+}
+
+.--tech-nav{
+	margin-top:1rem;
+}
+
+.--tech-nav-ul{
+	gap:.5rem;
+}
+
+.--tech-nav-link:hover{
+	color:#FFF;
+}
+
+.--tech-nav-link li{
+	padding:.5rem;
+	margin:.25rem;
+}
+
+.--tech-nav-link.selected li{
+	border:1px solid var(--green);
+	border-radius:.935rem;
 }
