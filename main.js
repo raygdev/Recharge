@@ -1,3 +1,5 @@
+import { app } from './firebaseConfig'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from '@firebase/auth' 
 import './style.css'
 /*libraries*/
 import {DateTime} from 'luxon'
@@ -8,6 +10,8 @@ const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
 const weatherIconEl = document.getElementById('weather-container')
 const techNavEl = document.getElementById('tech-nav')
+const authDataEl = document.getElementById('auth-data')
+const authDataImgEl = document.getElementById('auth-img')
 
 function renderBackground(){
   appEl.style.background = `url(${AppBG})`
@@ -56,6 +60,35 @@ function renderWeather(){
 }
 
 /* --SIGN IN-- */
+const auth = getAuth()
+const googleProvider = new GoogleAuthProvider();
+let currentUser = ''
+
+const handleGoogle = (e)=>{
+  e.preventDefault()
+  signInWithPopup(auth, googleProvider)
+    .then((results)=>{
+      const credential = GoogleAuthProvider.credentialFromResult(results);
+      const token = credential.accessToken;
+      const authenticated = {credToken:token, user: results.user};
+      currentUser = authenticated;
+      updateUser()
+    }).catch((error)=>{
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      const credential = GoogleAuthProvider.credentialFromError(error)
+    })
+}
+
+authDataEl.addEventListener('click', handleGoogle)
+
+const updateUser = ()=>{
+  authDataEl.textContent = currentUser.user.displayName;
+  authDataImgEl.src = currentUser.user.photoURL;
+  authDataImgEl.classList.add('authenticated-img')
+  authDataEl.classList.add('authenticated-name')
+}
 
 /* --TECH NAV COMPONENT--*/
 const navList = ['All', 'Web Technologies', 'Frameworks', 'Libraries']

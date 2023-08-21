@@ -12,6 +12,7 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "firebase": "^10.2.0",
     "luxon": "^3.4.0"
   }
 }
