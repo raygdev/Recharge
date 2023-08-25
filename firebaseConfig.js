@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { collection, getFirestore, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4Wi6v1b6kqqbiUqEPG88e-JN-uCkTn-U",
@@ -11,5 +12,35 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
+const database = getFirestore(app);
+const projectRef = collection(database, 'projects')
+const skillsRef = collection(database, 'skills')
 
-export { app }
+const getData = async (ref)=> {
+  const currentRef = ref == 'projects' ? projectRef 
+    : ref == 'skills' ? skillsRef 
+    : null;
+
+  const querySnapShot = await getDocs(currentRef)
+  const dataArr = querySnapShot.docs.map(doc => ({
+    ...doc.data(),
+    id:doc.id
+  }))
+  return dataArr;
+}
+
+const addData = (ref, dataObj)=>{
+  const currentRef = ref == 'projects' ? projectRef 
+    : ref == 'skills' ? skillsRef 
+    : null;
+    
+  addDoc(currentRef, dataObj)
+.then(()=>{
+    alert('data added')
+})
+.catch((error)=>{
+    throw new Error(error)
+})
+}
+
+export { app, getData, addData }

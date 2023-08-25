@@ -1,4 +1,4 @@
-import { app } from './firebaseConfig'
+import { app, getData, addData } from './firebaseConfig'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from '@firebase/auth' 
 import './style.css'
 /*libraries*/
@@ -12,6 +12,17 @@ const weatherIconEl = document.getElementById('weather-container')
 const techNavEl = document.getElementById('tech-nav')
 const authDataEl = document.getElementById('auth-data')
 const authDataImgEl = document.getElementById('auth-img')
+const filteredSkillsListEl = document.getElementById('filtered-skills-list')
+
+//TEMPORARY ADD DATA
+// const tempAddEl = document.getElementById('temp-add') 
+
+// const tempAddData = ()=>{
+//   addData('projects', {})
+// }
+// tempAddEl.addEventListener('click', tempAddData)
+
+const skillsArr = await getData('skills')
 
 function renderBackground(){
   appEl.style.background = `url(${AppBG})`
@@ -103,6 +114,7 @@ function renderTechNavLinks(){
   techNavUL.innerHTML = techNavList;
   techNavEl.appendChild(techNavUL);
   addTechNavListener()
+  determineSkillsContainer()
 }
 
 function addTechNavListener(){
@@ -116,6 +128,26 @@ function changeTechNavSelected(e){
     item.classList.remove('selected')
   })
   e.target.classList.add('selected')
+  determineSkillsContainer()
+}
+
+function determineSkillsContainer(){
+  const techNavToDisplay = document.querySelectorAll('.--tech-nav-link.selected')
+  const selectedSkillsArr = sortSkills(techNavToDisplay[0].textContent)
+  renderSkillsContainer(selectedSkillsArr)
+}
+
+function sortSkills(text){
+ return  skillsArr.filter(ele => {
+    return ele.navLinks.includes(text)
+  })
+}
+
+function renderSkillsContainer(techNavSelected){
+  let skillsInnerHTML = techNavSelected.map(item => {
+    return `<li id="${item.name}-li-item" class="--skill-list-item"><img src="./src/images/${item.imgSrc}" alt="${item.name} icon"></li>`
+  }).join('')
+  filteredSkillsListEl.innerHTML = skillsInnerHTML
 }
 
 renderBackground()

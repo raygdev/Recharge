@@ -49,6 +49,10 @@ table {
 	border-spacing: 0;
 }
 
+*, *::before, *::after{
+	box-sizing: border-box;
+}
+
 :root{
 	font-size:16px;
 	font-family:'Roboto Condensed', sans-serif;
@@ -57,6 +61,7 @@ table {
 	--magenta:#D854EE;
 	--indigo:#44E2E2;
 	--green:#54A044;
+	--skill-list-grey:#6A6666;
 	--XVIPX:1rem;
 	--XXPX:1.25rem;
 	--secondary-font:'Oswald', sans-serif;
@@ -93,7 +98,6 @@ a:hover{
 }
 
 .--app{
-	min-width:100vw;
 	min-height:100vh;
 }
 
@@ -108,6 +112,11 @@ a:hover{
 
 .--auth-data{
 	align-self: flex-end;
+}
+
+.icon.authenticated-img{
+	border-radius:50%;
+	outline:1px solid var(--white);
 }
 
 .--tech-nav{
@@ -130,4 +139,32 @@ a:hover{
 .--tech-nav-link.selected li{
 	border:1px solid var(--green);
 	border-radius:.935rem;
+}
+
+.--filtered-skills-list{
+	gap:1rem;
+	margin-top:2rem;
+}
+
+.--skill-list-item{
+	width:6.25rem;
+	background-color:var(--skill-list-grey);
+	padding:1rem 0.25rem;
+	box-shadow:0 2px 2px var(--black);
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.--skill-list-item img{
+	width:90%;
+}
+
+.--skill-list-item:hover,
+.--skill-list-item:target, 
+.--skill-list-item:focus,
+.--skill-list-item:active,
+.--skill-list-item::selection,
+.--skill-list-item.selected{
+	outline:3px dotted var(--indigo);
 }
