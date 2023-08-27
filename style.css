@@ -143,7 +143,7 @@ a:hover{
 
 .--filtered-skills-list{
 	gap:1rem;
-	margin-top:2rem;
+	margin:2rem 2rem;
 }
 
 .--skill-list-item{
@@ -168,3 +168,24 @@ a:hover{
 .--skill-list-item.selected{
 	outline:3px dotted var(--indigo);
 }
+
+.--info-container{
+	display:grid;
+	padding:2rem;
+	grid-template-columns:repeat(4, 1fr);
+	grid-template-rows:3rem 2rem 2rem 2rem 2rem;
+	grid-template-areas:
+		"title . . ."
+		"icon . . ."
+		"time pop version projects"
+		"count percentage iteration number"
+		". use status production";
+}
+
+.--info-container *{
+	outline:1px red solid;
+}
+
+.--info-title{grid-area:title};
+.--info-icon{grid-area:icon};
+.--info-skill-name{grid-area:icon};

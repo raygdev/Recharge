@@ -148,7 +148,22 @@ function renderSkillsContainer(techNavSelected){
     return `<li id="${item.name}-li-item" class="--skill-list-item"><img src="./src/images/${item.imgSrc}" alt="${item.name} icon"></li>`
   }).join('')
   filteredSkillsListEl.innerHTML = skillsInnerHTML
+  skillListener()
 }
+
+function skillListener(){
+  document.querySelectorAll('.--skill-list-item').forEach(item => {
+    item.addEventListener('mouseenter', buildInfoContainer)
+  })
+}
+
+function buildInfoContainer(){
+  console.log('in the list')
+}
+
+/* SKLZ INFO COMPONENT */
+
+
 
 renderBackground()
 renderTime(timeDataEl)
