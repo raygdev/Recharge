@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Roboto+Condensed:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto+Condensed:wght@400;700&display=swap');
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -64,6 +63,7 @@ table {
 	--skill-list-grey:#6A6666;
 	--XVIPX:1rem;
 	--XXPX:1.25rem;
+	--XXXIIPX:2rem;
 	--secondary-font:'Oswald', sans-serif;
 }
 
@@ -80,17 +80,22 @@ a:hover{
 /*Utility Classes*/
 .secondary-font{font-family:var(--secondary-font)}
 .XXPT{font-size:var(--XXPX)}
+.XXXIIPT{font-size: var(--XXXIIPX);}
 
 .medium{font-weight:500;}
 .bold{font-weight:700;}
 .white-text{color:var(--white)}
 .black-text{color:var(--black)}
+.thin-stroke{-webkit-text-stroke: 1px var(--black);}
+.thick-stroke{-webkit-text-stroke: 2px var(--black);}
 
 .flex{display:flex}
 .flex-column{flex-direction: column;}
 .flex-center{justify-content: center;}
 .flex-align-center{align-items: center;}
 .flex-wrap{flex-wrap: wrap;}
+
+.grid-center-item{justify-self: center;}
 
 .icon{
 	width:2rem;
@@ -169,23 +174,65 @@ a:hover{
 	outline:3px dotted var(--indigo);
 }
 
+.--info-title{grid-area: a;}
+.--info-grid-b{grid-area: b;
+	display:flex;
+}
+.time{grid-area: c;}
+.pop{grid-area: d;}
+.version{grid-area: e;}
+.projects{grid-area: f;}
+.count{grid-area: g;}
+.percentage{grid-area: h;}
+.iteration{grid-area: i;}
+.number{grid-area: j;}
+.use{grid-area: k;}
+.status{grid-area: l;}
+.production{grid-area: m;}
+.--info-caret{grid-area: n;}
+
 .--info-container{
+	color:white;
+	-webkit-text-stroke: 2px #131313;
+	margin:6rem 1rem 0;
 	display:grid;
-	padding:2rem;
-	grid-template-columns:repeat(4, 1fr);
-	grid-template-rows:3rem 2rem 2rem 2rem 2rem;
-	grid-template-areas:
-		"title . . ."
-		"icon . . ."
-		"time pop version projects"
-		"count percentage iteration number"
-		". use status production";
+	grid-template-rows:3rem 3rem 3rem 2rem 2rem repeat(11, 2rem) 1.5rem;
+	grid-template-areas: 
+	" a . . . "
+	" b . . . "
+	" c c c c "
+	" g g g g "
+	" . . . . " 
+	" d d d d "
+	" h h h h "
+	" k k k k "
+	" . . . . "
+	" e e e e "
+	" i i i i "
+	" l l l l "
+	" . . . . "
+	" f f f f "
+	" j j j j "
+	" m m m m "
+	" . . . . "
+	" n n n n ";
+}
+
+@media (min-width:768px){
+	.--info-container{
+		grid-template-rows:3rem 3rem 3rem 2rem 2rem 1.5rem;
+		grid-template-areas: 
+	" a . . . "
+	" b . . . "
+	" c d e f "
+	" g h i j "
+	" . k l m "
+	" n n n n ";
+	}
 }
 
 .--info-container *{
 	outline:1px red solid;
 }
 
-.--info-title{grid-area:title};
-.--info-icon{grid-area:icon};
-.--info-skill-name{grid-area:icon};
+
