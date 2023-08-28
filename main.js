@@ -13,6 +13,7 @@ const techNavEl = document.getElementById('tech-nav')
 const authDataEl = document.getElementById('auth-data')
 const authDataImgEl = document.getElementById('auth-img')
 const filteredSkillsListEl = document.getElementById('filtered-skills-list')
+const infoContainerEl = document.getElementById('info-container')
 
 //TEMPORARY ADD DATA
 // const tempAddEl = document.getElementById('temp-add') 
@@ -145,7 +146,7 @@ function sortSkills(text){
 
 function renderSkillsContainer(techNavSelected){
   let skillsInnerHTML = techNavSelected.map(item => {
-    return `<li id="${item.name}-li-item" class="--skill-list-item"><img src="./src/images/${item.imgSrc}" alt="${item.name} icon"></li>`
+    return `<li data-name="${item.name}" id="${item.name}-li-item" class="--skill-list-item"><img src="./src/images/${item.imgSrc}" alt="${item.name} icon"></li>`
   }).join('')
   filteredSkillsListEl.innerHTML = skillsInnerHTML
   skillListener()
@@ -157,8 +158,26 @@ function skillListener(){
   })
 }
 
-function buildInfoContainer(){
-  console.log('in the list')
+function buildInfoContainer(event){
+  infoContainerEl.innerHTML = '';
+  const selectedSkill = event.target.dataset.name;
+  infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
+  infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
+  let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
+  infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
+  infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', source:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
+  infoContainerEl.append(buildSingleElement())
+}
+
+function buildSingleElement(fullElement){
+  const {ele, id, classes, text, source, name,  } = {...fullElement}
+  let newElement = document.createElement(ele);
+  source == 'animateCSS' ? (newElement.src = `./src/images/${source}.png`) : (newElement.src = `./src/images/${source}.svg`);
+  name && (newElement.alt = name)
+  id && (newElement.id = id);
+  classes && (newElement.classList.add(...classes))
+  text && (newElement.textContent = text.toUpperCase());
+  return newElement
 }
 
 /* SKLZ INFO COMPONENT */

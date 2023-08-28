@@ -177,6 +177,7 @@ a:hover{
 .--info-title{grid-area: a;}
 .--info-grid-b{grid-area: b;
 	display:flex;
+	gap:.5rem;
 }
 .time{grid-area: c;}
 .pop{grid-area: d;}
@@ -193,7 +194,7 @@ a:hover{
 
 .--info-container{
 	color:white;
-	-webkit-text-stroke: 2px #131313;
+	-webkit-text-stroke: 1px #131313;
 	margin:6rem 1rem 0;
 	display:grid;
 	grid-template-rows:3rem 3rem 3rem 2rem 2rem repeat(11, 2rem) 1.5rem;
@@ -229,10 +230,6 @@ a:hover{
 	" . k l m "
 	" n n n n ";
 	}
-}
-
-.--info-container *{
-	outline:1px red solid;
 }
 
 
