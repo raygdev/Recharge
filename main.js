@@ -15,6 +15,19 @@ const authDataImgEl = document.getElementById('auth-img')
 const filteredSkillsListEl = document.getElementById('filtered-skills-list')
 const infoContainerEl = document.getElementById('info-container')
 
+const packageName = 'react'
+/*-- GITHUB REPO --*/
+// fetch('https://api.github.com/users/RawleJuglal/repos')
+//   .then(res => res.json())
+//   .then(data => console.log(data[0]))
+
+/*Getting the latest version*/
+// fetch(`https://registry.npmjs.org/${packageName}/latest`)
+// .then(res => res.json())
+// .then(data => console.log(data))
+
+
+
 //TEMPORARY ADD DATA
 // const tempAddEl = document.getElementById('temp-add') 
 
@@ -158,15 +171,35 @@ function skillListener(){
   })
 }
 
-function buildInfoContainer(event){
+async function buildInfoContainer(event){
   infoContainerEl.innerHTML = '';
   const selectedSkill = event.target.dataset.name;
+  const popularity = await fetchPopularity(selectedSkill);
   infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
   infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
   let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
   infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
-  infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', source:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
-  infoContainerEl.append(buildSingleElement())
+  infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', classes:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
+  infoContainerEl.append(buildSingleElement({ele:'h2', classes:['time', 'grid-center-item'], text:'Time Spent'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:'04M28D'}))
+  infoContainerEl.append(buildSingleElement({ele:'h2', classes:['pop', 'grid-center-item'], text:'Popularity'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:popularity}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['use', 'grid-center-item'], text:'devs use'}))
+  infoContainerEl.append(buildSingleElement({ele:'h2', classes:['version', 'grid-center-item'], text:'Version'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:'18.2.0'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['status', 'grid-center-item'], text:'Stable'}))
+  infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:'17'}))
+  infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
+  infoContainerEl.append(buildSingleElement({ele:'button', classes:['--info-caret', 'grid-center-item'], text:'caret'}))
+}
+
+async function fetchPopularity (skill){
+/*Getting the popularity*/
+let response = await fetch(` https://registry.npmjs.org/-/v1/search?text=${skill}`)
+let data = await response.json()
+let solution = await Math.ceil(data.objects[0].score.detail.popularity * 100)
+return solution.toString()
 }
 
 function buildSingleElement(fullElement){
@@ -176,7 +209,7 @@ function buildSingleElement(fullElement){
   name && (newElement.alt = name)
   id && (newElement.id = id);
   classes && (newElement.classList.add(...classes))
-  text && (newElement.textContent = text.toUpperCase());
+  id=='percentage' && text ? (newElement.textContent = `${text.toUpperCase()}%`) : text && (newElement.textContent = text.toUpperCase());
   return newElement
 }
 
