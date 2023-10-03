@@ -36,7 +36,8 @@ const packageName = 'react'
 // }
 // tempAddEl.addEventListener('click', tempAddData)
 
-const skillsArr = await getData('skills')
+//NEED TO FIX SKILLS TO APPEAR WITHOUT AUTH
+// const skillsArr = await getData('skills')
 
 function renderBackground(){
   appEl.style.background = `url(${AppBG})`
@@ -220,4 +221,4 @@ function buildSingleElement(fullElement){
 renderBackground()
 renderTime(timeDataEl)
 renderWeather()
-renderTechNavLinks()
+// renderTechNavLinks()
