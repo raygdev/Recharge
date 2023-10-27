@@ -118,7 +118,7 @@ function renderSkillsContainer(techNavSelected){
   //techNavSelected is the array of Objects that matches the navLink selected
   let skillsInnerHTML = techNavSelected.map(item => {
     //a list item with the name,id,class and an image is returned and added to skillsInnerHTML
-    return `<li data-name="${item.name}" id="${item.name}-li-item" class="--skill-list-item"><img src="images/${item.imgSrc}" alt="${item.name} icon"></li>`
+    return `<li data-name="${item.name}" id="${item.name}-li-item" class="--skill-list-item"><img src="./src/images/${item.imgSrc}" alt="${item.name} icon"></li>`
   }).join('')
   //The multiple li elements are then placed into the <ul id="filtered-skills-list">
   filteredSkillsListEl.innerHTML = skillsInnerHTML
