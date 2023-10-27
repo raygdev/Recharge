@@ -107,7 +107,7 @@ export function handleGoogle(e){
   //changes text back to sign in and image back to default image
   function updateSignIn(){
     authDataEl.textContent = 'Sign In';
-    authDataImgEl.src = './src/images/FilePerson.png';
+    authDataImgEl.src = './images/FilePerson.png';
     authDataImgEl.classList.remove('authenticated-img');
     authDataEl.classList.remove('authenticated-name');
   }

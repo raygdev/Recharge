@@ -200,7 +200,7 @@ return solution.toString()
 function buildSingleElement(fullElement){
   const {ele, id, classes, text, source, name,  } = {...fullElement}
   let newElement = document.createElement(ele);
-  source == 'animateCSS' ? (newElement.src = `./src/images/${source}.png`) : (newElement.src = `./src/images/${source}.svg`);
+  source == 'animateCSS' ? (newElement.src = `./images/${source}.png`) : (newElement.src = `./src/images/${source}.svg`);
   name && (newElement.alt = name)
   id && (newElement.id = id);
   classes && (newElement.classList.add(...classes))
