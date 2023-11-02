@@ -230,6 +230,10 @@ a:hover{
 	" . k l m "
 	" n n n n ";
 	}
+
+	.grid-center-item:not(.--info-caret){
+		justify-self: left;
+	}
 }
 
 

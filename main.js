@@ -1,10 +1,12 @@
 import './style.css'
 /*libraries*/
 import { renderTime, renderWeather, handleGoogle } from './components/header'
+import { Octokit, App } from "octokit";
 /*images*/
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import skillsCollection from './skills'
+import { process } from './token';
 
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
@@ -17,7 +19,7 @@ const infoContainerEl = document.getElementById('info-container')
 /*-- GITHUB REPO --*/
 // fetch('https://api.github.com/users/RawleJuglal/repos')
 //   .then(res => res.json())
-//   .then(data => console.log(data[0]))
+//   .then(data => console.log(data))
 
 /*Getting the latest version*/
 // fetch(`https://registry.npmjs.org/${packageName}/latest`)
@@ -35,7 +37,16 @@ const infoContainerEl = document.getElementById('info-container')
 // tempAddEl.addEventListener('click', tempAddData)
 
 const skillsArr = skillsCollection;
-let readyForNewInfoContainer = true;
+const octokit = new Octokit({
+  auth:process.env.Github_API
+})
+let isHovering = false;
+let timeout;
+
+await octokit.request("GET /repos/{owner}/{repo}/tags", {
+  owner: 'RawleJuglal',
+  repo:'glampers'
+}).then(res => console.log(res))
 
 function renderBackground(){
   appEl.style.background = `url(${AppBG})`
@@ -140,53 +151,38 @@ function addMouseLeaveSkillListener(){
   })
 }
 
-function removeSkillListener(){
-  //remove mouseenter to all <li class='--skill-list-items> to call buildInfoContainer function
-  document.querySelectorAll('.--skill-list-item').forEach(item => {
-    item.removeEventListener('mouseenter', buildInfoContainer)
-  })
-}
-
 async function buildInfoContainer(event){
-  removeSkillListener()
-    if(readyForNewInfoContainer){
-      readyForNewInfoContainer = false;
-      infoContainerEl.innerHTML = '';
-      const selectedSkill = event.target.dataset.name;
-      const popularity = await fetchPopularity(selectedSkill);
-      infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
-      infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
-      let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
-      infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
-      infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', classes:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
-      infoContainerEl.append(buildSingleElement({ele:'h2', classes:['time', 'grid-center-item'], text:'Time Spent'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:'04M28D'}))
-      infoContainerEl.append(buildSingleElement({ele:'h2', classes:['pop', 'grid-center-item'], text:'Popularity'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:popularity}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['use', 'grid-center-item'], text:'devs use'}))
-      infoContainerEl.append(buildSingleElement({ele:'h2', classes:['version', 'grid-center-item'], text:'Version'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:'18.2.0'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['status', 'grid-center-item'], text:'Stable'}))
-      infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:'17'}))
-      infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
-      infoContainerEl.append(buildSingleElement({ele:'button', classes:['--info-caret', 'grid-center-item'], text:'caret'}))  
-      readyForNewInfoContainer = true;
-    }
-    
-        
+      isHovering = true;
+      timeout = setTimeout(async ()=>{
+        infoContainerEl.innerHTML = '';
+        const selectedSkill = event.target.dataset.name;
+        const popularity = await fetchPopularity(selectedSkill);
+        infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
+        infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
+        let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
+        infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
+        infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', classes:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
+        infoContainerEl.append(buildSingleElement({ele:'h2', classes:['time', 'grid-center-item'], text:'Time Spent'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:'04M28D'}))
+        infoContainerEl.append(buildSingleElement({ele:'h2', classes:['pop', 'grid-center-item'], text:'Popularity'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:popularity}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['use', 'grid-center-item'], text:'devs use'}))
+        infoContainerEl.append(buildSingleElement({ele:'h2', classes:['version', 'grid-center-item'], text:'Version'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:'18.2.0'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['status', 'grid-center-item'], text:'Stable'}))
+        infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:'17'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
+        infoContainerEl.append(buildSingleElement({ele:'button', classes:['--info-caret', 'grid-center-item'], text:'caret'}))   
+      }, 1000)
+       
 }
 
 function checkForCompleted(){
-  let nIntervalID;
-  if(readyForNewInfoContainer){
-    clearInterval(nIntervalID);
-    addMouseEnterSkillListener() 
-  } else {
-   if(!nIntervalID){
-    nIntervalID = setInterval(checkForCompleted,3000);
-   } 
-  }
+  if(!timeout) return;
+  clearTimeout(timeout);
+  timeout = null;
+  isHovering = false;
 }
 
 async function fetchPopularity (skill){
