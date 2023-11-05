@@ -1,12 +1,11 @@
 import './style.css'
 /*libraries*/
 import { renderTime, renderWeather, handleGoogle } from './components/header'
-import { Octokit, App } from "octokit";
 /*images*/
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import skillsCollection from './skills'
-import { process } from './token';
+import { repos } from './projects'
 
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
@@ -17,9 +16,7 @@ const filteredSkillsListEl = document.getElementById('filtered-skills-list')
 const infoContainerEl = document.getElementById('info-container')
 
 /*-- GITHUB REPO --*/
-// fetch('https://api.github.com/users/RawleJuglal/repos')
-//   .then(res => res.json())
-//   .then(data => console.log(data))
+console.log(repos)
 
 /*Getting the latest version*/
 // fetch(`https://registry.npmjs.org/${packageName}/latest`)
@@ -37,16 +34,9 @@ const infoContainerEl = document.getElementById('info-container')
 // tempAddEl.addEventListener('click', tempAddData)
 
 const skillsArr = skillsCollection;
-const octokit = new Octokit({
-  auth:process.env.Github_API
-})
+
 let isHovering = false;
 let timeout;
-
-await octokit.request("GET /repos/{owner}/{repo}/tags", {
-  owner: 'RawleJuglal',
-  repo:'glampers'
-}).then(res => console.log(res))
 
 function renderBackground(){
   appEl.style.background = `url(${AppBG})`
