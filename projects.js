@@ -24,7 +24,8 @@ const usefulInformationArr = repos.map(ele => {
         githubLocation:ele.html_url,
         languages: getLanguages(ele),
         liveAt:ele.homepage,
-        imageUrl: getScreenGrab(ele)
+        imageUrl: '',
+        dependencies:getDependencies(ele)
     }
 })
 
@@ -39,18 +40,47 @@ async function getLanguages(ele){
     return reservedWord.data
 } 
 
-async function getScreenGrab(ele){
-    const imageEle = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-        owner:'RawleJuglal',
-        repo:ele.name,
-        path:'/src/assets/screengrab/screengrab.png',
-    })
-    console.log(atob(imageEle.data.content))
-    return atob(imageEle.data.content)
+
+//Not working for saving a screengrab image
+// async function getScreenGrab(ele){
+//     if(ele.name == 'ImOnIt'){
+//         const imageEle = await octokit.request(`GET ${ele.downloads_url}`)
+//         console.log(imageEle);
+//         return imageEle
+//     }
+   
+// }
+
+async function getDependencies(ele){
+    try {
+        const dependecies = await fetch(`https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/package.json`)
+        .then(res => {
+            if(res.ok){
+                return res.json()
+            } else {
+                return null;
+            }
+        })
+        .then(data => {
+            if(data){
+                let currDep = [];
+                if(data.dependencies){
+                    currDep = [...Object.keys(data.dependencies)]
+                }
+                if(data.devDependencies){
+                    currDep = [...currDep, ...Object.keys(data.devDependencies)]
+                }
+                return currDep;
+            }
+        })
+        return dependecies;
+    } catch (error) {
+       console.log('im in the error')
+    }
 }
 
 
 
 
 
-export { repos }
+export { repos, usefulInformationArr }

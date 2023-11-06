@@ -5,7 +5,8 @@ import { renderTime, renderWeather, handleGoogle } from './components/header'
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import skillsCollection from './skills'
-import { repos } from './projects'
+import { repos, usefulInformationArr } from './projects'
+import { doc } from 'firebase/firestore'
 
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
@@ -14,9 +15,10 @@ const techNavEl = document.getElementById('tech-nav')
 const authDataLinkEl = document.getElementById('auth-link')
 const filteredSkillsListEl = document.getElementById('filtered-skills-list')
 const infoContainerEl = document.getElementById('info-container')
+const testEl = document.getElementById('test-div');
 
 /*-- GITHUB REPO --*/
-console.log(repos)
+// console.log(repos)
 
 /*Getting the latest version*/
 // fetch(`https://registry.npmjs.org/${packageName}/latest`)
@@ -194,11 +196,17 @@ function buildSingleElement(fullElement){
   return newElement
 }
 
+// function testImg(){
+//   const imgEl = document.createElement('img')
+//   imgEl.src = usefulInformationArr[24].imageUrl;
+//   testEl.append(imgEl)
+// }
+
 /* SKLZ INFO COMPONENT */
-
-
-
 renderBackground()
 
 
 renderTechNavLinks()
+
+// testImg()
+console.log(usefulInformationArr)
