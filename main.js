@@ -5,7 +5,7 @@ import { renderTime, renderWeather, handleGoogle } from './components/header'
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import { skillsCollection } from './skills'
-import { repos, usefulInformationArr } from './projects'
+// import { repos, usefulInformationArr } from './projects'
 import { doc } from 'firebase/firestore'
 
 const appEl = document.getElementById('app')
