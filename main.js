@@ -36,6 +36,7 @@ const testEl = document.getElementById('test-div');
 // tempAddEl.addEventListener('click', tempAddData)
 
 const skillsArr = skillsCollection;
+console.log(skillsArr)
 
 let isHovering = false;
 let timeout;
@@ -195,13 +196,8 @@ async function fetchVersionCtrl(skill){
 }
 
 async function fetchProjectNum(skill){
-  const projectNum = usefulInformationArr.filter(async (ele) => {
-    if((await ele).dependencies.includes(skill)){
-      console.log(ele)
-      return ele
-    }
-  })
-  return projectNum
+  console.log(usefulInformationArr)
+  return null
 }
 
 function buildSingleElement(fullElement){

@@ -16,7 +16,7 @@ const repos = await octokit.request('GET /users/{username}/repos', {
    return res.data.filter(ele => !ele.archived)
   })
 
-const usefulInformationArr = repos.map(async (ele) => {
+let usefulInformationArr = await repos.map(async (ele) => {
     return {
         id:ele.id,
         name: ele.name,
