@@ -16,16 +16,16 @@ const repos = await octokit.request('GET /users/{username}/repos', {
    return res.data.filter(ele => !ele.archived)
   })
 
-const usefulInformationArr = repos.map(ele => {
+const usefulInformationArr = repos.map(async (ele) => {
     return {
         id:ele.id,
         name: ele.name,
         createdAt: ele.created_at,
         githubLocation:ele.html_url,
-        languages: getLanguages(ele),
+        languages: await getLanguages(ele),
         liveAt:ele.homepage,
         imageUrl: '',
-        dependencies:getDependencies(ele)
+        dependencies: await getDependencies(ele)
     }
 })
 
