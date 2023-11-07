@@ -15,6 +15,7 @@
     "firebase": "^10.2.0",
     "luxon": "^3.4.0",
     "nanoid": "^4.0.2",
+    "netlify-cli": "^17.1.0",
     "octokit": "^3.1.1"
   }
 }

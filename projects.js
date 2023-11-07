@@ -1,5 +1,5 @@
 import { Octokit } from "octokit";
-import { process } from './token'
+import { process } from './env'
 
 const octokit = new Octokit({
     auth: process.env.Github_API
