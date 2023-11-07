@@ -16,19 +16,6 @@ const repos = await octokit.request('GET /users/{username}/repos', {
    return res.data.filter(ele => !ele.archived)
   })
 
-let usefulInformationArr = await repos.map(async (ele) => {
-    return {
-        id:ele.id,
-        name: ele.name,
-        createdAt: ele.created_at,
-        githubLocation:ele.html_url,
-        languages: await getLanguages(ele),
-        liveAt:ele.homepage,
-        imageUrl: '',
-        dependencies: await getDependencies(ele)
-    }
-})
-
 async function getLanguages(ele){
     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
         username:'RawleJuglal',
@@ -79,8 +66,25 @@ async function getDependencies(ele){
     }
 }
 
+let usefulInformationArr = repos.map(async ele => {
+    return {
+        id:ele.id,
+        name: ele.name,
+        createdAt: ele.created_at,
+        githubLocation:ele.html_url,
+        languages: await getLanguages(ele),
+        liveAt:ele.homepage,
+        imageUrl: '',
+        dependencies: await getDependencies(ele)
+    }
+})
 
+const usefulInfo = async (usefulInformationArr) => { 
 
+    return await Promise.all(usefulInformationArr)
+    
+}
 
+console.log(usefulInfo)
 
 export { repos, usefulInformationArr }

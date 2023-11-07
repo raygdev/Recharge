@@ -5,8 +5,6 @@ import { renderTime, renderWeather, handleGoogle } from './components/header'
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import { skillsCollection } from './skills'
-// import { repos, usefulInformationArr } from './projects'
-import { doc } from 'firebase/firestore'
 
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
@@ -36,8 +34,6 @@ const testEl = document.getElementById('test-div');
 // tempAddEl.addEventListener('click', tempAddData)
 
 const skillsArr = skillsCollection;
-console.log(skillsArr)
-
 let isHovering = false;
 let timeout;
 
@@ -149,9 +145,6 @@ async function buildInfoContainer(event){
       timeout = setTimeout(async ()=>{
         infoContainerEl.innerHTML = '';
         const selectedSkill = event.target.dataset.name;
-        const version = await fetchVersionCtrl(selectedSkill)
-        const popularity = await fetchPopularity(selectedSkill);
-        const projectNum = await fetchProjectNum(selectedSkill);
         infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
         infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
         let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
@@ -160,10 +153,10 @@ async function buildInfoContainer(event){
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['time', 'grid-center-item'], text:'Time Spent'}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:'04M28D'}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['pop', 'grid-center-item'], text:'Popularity'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:popularity}))
+        infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:'81'}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['use', 'grid-center-item'], text:'devs use'}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['version', 'grid-center-item'], text:'Version'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:version}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:'0.0.0'}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['status', 'grid-center-item'], text:'Stable'}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:'17'}))
@@ -178,26 +171,6 @@ function checkForCompleted(){
   clearTimeout(timeout);
   timeout = null;
   isHovering = false;
-}
-
-async function fetchPopularity (skill){
-/*Getting the popularity*/
-let response = await fetch(` https://registry.npmjs.org/-/v1/search?text=${skill}`)
-let data = await response.json()
-let solution = await Math.ceil(data.objects[0].score.detail.popularity * 100)
-return solution.toString()
-}
-
-async function fetchVersionCtrl(skill){
-  const thisVersion = skillsCollection.filter(ele => {
-    return ele.name == skill
-  })
-  return thisVersion[0].versionCtrl;
-}
-
-async function fetchProjectNum(skill){
-  console.log(usefulInformationArr)
-  return null
 }
 
 function buildSingleElement(fullElement){
