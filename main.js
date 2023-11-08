@@ -32,8 +32,7 @@ const testEl = document.getElementById('test-div');
 //   addData('projects', {})
 // }
 // tempAddEl.addEventListener('click', tempAddData)
-
-const skillsArr = skillsCollection;
+const fullSkillsEl = await skillsCollection().then(data => data)
 let isHovering = false;
 let timeout;
 
@@ -92,12 +91,12 @@ function changeTechNavSelected(e){
   determineSkillsContainer()
 }
 
-function determineSkillsContainer(){
+async function determineSkillsContainer(){
   //finds the one NavLink selected
   const techNavToDisplay = document.querySelectorAll('.--tech-nav-link.selected')
   //gets the name of the skill and passes it to the sortSkills function 
   //which returns an Arr of Objects (only the skills that match the navLink)
-  const selectedSkillsArr = sortSkills(techNavToDisplay[0].textContent)
+  const selectedSkillsArr = await sortSkills(techNavToDisplay[0].textContent)
   //This array is passed to the renderskills to show the skills (grey box logos)
   renderSkillsContainer(selectedSkillsArr)
 }
@@ -109,9 +108,9 @@ function sortSkills(text){
     {id:nanoid(),imgSrc:'bootstrap.svg', name:'bootstrap', navLinks:['All','Frameworks']}
 
   */
- return  skillsArr.filter(ele => {
-    return ele.navLinks.includes(text)
-  })
+    return fullSkillsEl.filter(ele => {
+      return ele.navLinks.includes(text)
+    })
 }
 
 function renderSkillsContainer(techNavSelected){
@@ -145,6 +144,7 @@ async function buildInfoContainer(event){
       timeout = setTimeout(async ()=>{
         infoContainerEl.innerHTML = '';
         const selectedSkill = event.target.dataset.name;
+        const matchingFullSkillsEl = 
         infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
         infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
         let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
@@ -192,8 +192,6 @@ function buildSingleElement(fullElement){
 
 /* SKLZ INFO COMPONENT */
 renderBackground()
-
-
 renderTechNavLinks()
 
 // testImg()

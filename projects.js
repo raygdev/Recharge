@@ -79,12 +79,14 @@ let usefulInformationArr = repos.map(async ele => {
     }
 })
 
-const usefulInfo = async (usefulInformationArr) => { 
+const usefulInfo = async () => { 
 
     return await Promise.all(usefulInformationArr)
     
 }
 
-console.log(usefulInfo)
+// usefulInfo().then(data => {
+//     return data
+// })
 
-export { repos, usefulInformationArr }
+export { repos, usefulInfo, usefulInformationArr }
