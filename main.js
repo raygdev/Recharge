@@ -1,6 +1,7 @@
 import './style.css'
 /*libraries*/
 import { renderTime, renderWeather, handleGoogle } from './components/header'
+import { DateTime } from 'luxon'
 /*images*/
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
@@ -144,28 +145,32 @@ async function buildInfoContainer(event){
       timeout = setTimeout(async ()=>{
         infoContainerEl.innerHTML = '';
         const selectedSkill = event.target.dataset.name;
-        const matchingFullSkillsEl = 
+        const fullSkillInfoObj = fullSkillsEl.filter(ele => {
+          return selectedSkill === ele.name
+        })
+        const known = calculateTimeSpent(fullSkillInfoObj[0].timeSpent)
         infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
         infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
         let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
         infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
         infoGridBEl.append(buildSingleElement({ele:'h2', id:'info-skill-name', classes:['--info-skill-name', 'XXXIIPT', 'thick-stroke'], text:selectedSkill}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['time', 'grid-center-item'], text:'Time Spent'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:'04M28D'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['count', 'grid-center-item'], text:`${known.years ? known.years + 'Y' : ''} ${known.months >0 ? known.months + 'M' : '00'} ${known.days + 'D'}`}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['pop', 'grid-center-item'], text:'Popularity'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:'81'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', id:'percentage', classes:['percentage', 'grid-center-item'], text:`${fullSkillInfoObj[0].popularity}`}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['use', 'grid-center-item'], text:'devs use'}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['version', 'grid-center-item'], text:'Version'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:'0.0.0'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['iteration', 'grid-center-item'], text:`${fullSkillInfoObj[0].versionCtrl}`}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['status', 'grid-center-item'], text:'Stable'}))
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
-        infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:'17'}))
+        infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:`${fullSkillInfoObj[0].numOfProjects}`}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
         infoContainerEl.append(buildSingleElement({ele:'button', classes:['--info-caret', 'grid-center-item'], text:'caret'}))   
       }, 1000)
        
 }
 
+//clears out the timeout so that a new mouseenter can bring up skill
 function checkForCompleted(){
   if(!timeout) return;
   clearTimeout(timeout);
@@ -180,8 +185,21 @@ function buildSingleElement(fullElement){
   name && (newElement.alt = name)
   id && (newElement.id = id);
   classes && (newElement.classList.add(...classes))
-  id=='percentage' && text ? (newElement.textContent = `${text.toUpperCase()}%`) : text && (newElement.textContent = text.toUpperCase());
+  id=='percentage' && text ? (newElement.textContent = `${text.toUpperCase()}${text.toUpperCase() == 'N/A' ? '' : '%'}`) : text && (newElement.textContent = text.toUpperCase());
   return newElement
+}
+
+function calculateTimeSpent(timespent){
+  const now = DateTime.fromISO(new Date().toISOString())
+  const learned = DateTime.fromISO(timespent.toISOString())
+
+  const known = now.diff(learned, ['months', 'days']).toObject() //=> { months: 1, days: 2 }
+  if(known.months > 11){
+    known.years = Math.floor(known.months/12);
+    known.months = known.months%12;
+  }
+  known.days = Math.round(known.days)
+  return known
 }
 
 // function testImg(){

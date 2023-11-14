@@ -25,8 +25,7 @@ async function getLanguages(ele){
         }
     })
     return reservedWord.data
-} 
-
+}
 
 //Not working for saving a screengrab image
 // async function getScreenGrab(ele){
@@ -50,12 +49,36 @@ async function getDependencies(ele){
         })
         .then(data => {
             if(data){
+                const figmaDesigns = [
+                    'reactstatic', 
+                    'digitalbusinesscard',
+                    'airbnbclone',
+                    'traveljournal',
+                    'memegenerator', 
+                    'tenzies',
+                    'quizzical',
+                    'moviewatchlist',
+                    'scoreboard',
+                    'passwordgenerator',
+                    'unitconverter',
+                    'oldagram',
+                    'restaurant',
+                    'hotspots',
+                    'Learningjournal',
+                    'homereadyrenovations',
+                    'pollyglot',
+                ]
+
                 let currDep = [];
                 if(data.dependencies){
                     currDep = [...Object.keys(data.dependencies)]
                 }
                 if(data.devDependencies){
                     currDep = [...currDep, ...Object.keys(data.devDependencies)]
+                }
+                currDep = [...currDep, 'html5', 'css', 'javascript', 'git']
+                if(figmaDesigns.includes(data.name)){
+                    currDep = [...currDep, 'figma']
                 }
                 return currDep;
             }
