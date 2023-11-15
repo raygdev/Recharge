@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto+Condensed:wght@400;700&display=swap');
+@import '/node_modules/bootstrap/dist/css/bootstrap.min.css';
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -61,6 +62,9 @@ table {
 	--indigo:#44E2E2;
 	--green:#54A044;
 	--skill-list-grey:#6A6666;
+	--platinum:#E5E4E2;
+	--VIIIPX:.5rem;
+	--XIIPX:.75rem;
 	--XVIPX:1rem;
 	--XXPX:1.25rem;
 	--XXXIIPX:2rem;
@@ -79,13 +83,17 @@ a:hover{
 
 /*Utility Classes*/
 .secondary-font{font-family:var(--secondary-font)}
-.XXPT{font-size:var(--XXPX)}
+.VIIIPT{font-size: var(--VIIIPX);}
+.XIIPT{font-size:var(--XIIPX);}
+.XVIPT{font-size:var(--XVIPX);}
+.XXPT{font-size:var(--XXPX);}
 .XXXIIPT{font-size: var(--XXXIIPX);}
 
 .medium{font-weight:500;}
 .bold{font-weight:700;}
 .white-text{color:var(--white)}
 .black-text{color:var(--black)}
+.no-stroke{-webkit-text-stroke:unset}
 .thin-stroke{-webkit-text-stroke: 1px var(--black);}
 .thick-stroke{-webkit-text-stroke: 2px var(--black);}
 
@@ -192,11 +200,14 @@ a:hover{
 .production{grid-area: m;}
 .--info-caret{grid-area: n;}
 
-.--info-container{
+.--info-container, .--project-container{
 	color:white;
-	-webkit-text-stroke: 1px #131313;
-	margin:6rem 1rem 0;
+	margin:6rem 1rem 1rem;
+}
+
+.--info-container{
 	display:grid;
+	-webkit-text-stroke: 1px #131313;
 	grid-template-rows:3rem 3rem 3rem 2rem 2rem repeat(11, 2rem) 1.5rem;
 	grid-template-areas: 
 	" a . . . "
@@ -219,9 +230,68 @@ a:hover{
 	" n n n n ";
 }
 
+.--info-caret{
+	padding-top:.75rem;
+	background-color:transparent;
+	outline:none;
+	border:none;
+	width:3em;
+}
+
+.--info-caret:hover{
+	cursor: pointer;
+}
+
+.--caret-down{
+	width:100%;
+}
+
+.--info-caret:hover .--caret-down{
+	box-shadow:0 2px 2px var(--black);
+}
+
+/* Projects Section */
+.--project-card{
+	gap:1rem;
+	margin-top:var(--XXPX);
+}
+
+.--project-image-div, .--project-data-div{
+	width:18rem;
+}
+.--project-image{
+	width:100%;
+}
+
+div.bg-royal{
+	background-color:purple;
+}
+
+.--progress-data{
+	margin:1rem 0 1rem 1rem;
+	justify-content: space-between;
+	list-style-type: disc;
+	font-weight:400;
+	font-family:'Roboto Condensed', sans-serif;
+}
+
+li span.--lang-percentage{
+	color:var(--platinum);
+	text-shadow:0 0 2px #131313;
+}
+
+.--github-div{
+	justify-content: space-between;
+	align-items: center;
+}
+
+.--code-fork{
+	width:2.5rem;
+}
+
 @media (min-width:768px){
 	.--info-container{
-		grid-template-rows:3rem 3rem 3rem 2rem 2rem 1.5rem;
+		grid-template-rows:3rem 3rem 3rem 2rem 2rem 4rem;
 		grid-template-areas: 
 	" a . . . "
 	" b . . . "
@@ -237,6 +307,15 @@ a:hover{
 
 	.time,.pop,.version,.projects{
 		padding-top:.5rem;
+	}
+
+	.--project-title{
+		text-align: center;
+	}
+
+	.--project-card{
+		justify-content: center;
+		gap:2rem;
 	}
 }
 

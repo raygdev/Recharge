@@ -140,6 +140,14 @@ function addMouseLeaveSkillListener(){
   })
 }
 
+function addCaretDownListener(){
+  document.querySelector('.--caret-down').addEventListener('click', openMatchingProjects)
+}
+
+function openMatchingProjects(){
+  console.log('lets open this')
+}
+
 async function buildInfoContainer(event){
       isHovering = true;
       timeout = setTimeout(async ()=>{
@@ -165,7 +173,10 @@ async function buildInfoContainer(event){
         infoContainerEl.append(buildSingleElement({ele:'h2', classes:['projects', 'grid-center-item'], text:'# of Projects'}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:`${fullSkillInfoObj[0].numOfProjects}`}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
-        infoContainerEl.append(buildSingleElement({ele:'button', classes:['--info-caret', 'grid-center-item'], text:'caret'}))   
+        infoContainerEl.append(buildSingleElement({ele:'button', id:'info-caret', classes:['--info-caret', 'grid-center-item']}))
+        let caretEl = document.getElementById('info-caret')
+        caretEl.append(buildSingleElement({ele:'img', id:'caret-icon', source:'caret-down', classes:['--caret-down'], name:'caret down'}));
+        addCaretDownListener()   
       }, 1000)
        
 }
@@ -186,6 +197,7 @@ function buildSingleElement(fullElement){
   id && (newElement.id = id);
   classes && (newElement.classList.add(...classes))
   id=='percentage' && text ? (newElement.textContent = `${text.toUpperCase()}${text.toUpperCase() == 'N/A' ? '' : '%'}`) : text && (newElement.textContent = text.toUpperCase());
+  ele=='img' && id == 'caret-icon' ? (newElement.src = `./images/${source}.png`) : '';
   return newElement
 }
 
