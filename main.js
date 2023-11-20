@@ -6,7 +6,9 @@ import { DateTime } from 'luxon'
 import AppBG from './src/images/app-bg.jpg'
 /* internal files */
 import { skillsCollection } from './skills'
+import { usefulInfo } from './projects'
 
+/*-- DOM ELEMENTS --*/
 const appEl = document.getElementById('app')
 const timeDataEl = document.getElementById('time-data')
 const weatherIconEl = document.getElementById('weather-container')
@@ -14,26 +16,12 @@ const techNavEl = document.getElementById('tech-nav')
 const authDataLinkEl = document.getElementById('auth-link')
 const filteredSkillsListEl = document.getElementById('filtered-skills-list')
 const infoContainerEl = document.getElementById('info-container')
-const testEl = document.getElementById('test-div');
+const projectInfoContainerEl = document.getElementById('project-container')
 
-/*-- GITHUB REPO --*/
-// console.log(repos)
-
-/*Getting the latest version*/
-// fetch(`https://registry.npmjs.org/${packageName}/latest`)
-// .then(res => res.json())
-// .then(data => console.log(data))
-
-
-
-//TEMPORARY ADD DATA
-// const tempAddEl = document.getElementById('temp-add') 
-
-// const tempAddData = ()=>{
-//   addData('projects', {})
-// }
-// tempAddEl.addEventListener('click', tempAddData)
+/*-- Global Variables --*/
+// skills collection promise all function that fills w/ skill array of objects
 const fullSkillsEl = await skillsCollection().then(data => data)
+const projectsArr = await usefulInfo().then(data => data)
 let isHovering = false;
 let timeout;
 
@@ -135,28 +123,42 @@ function addMouseEnterSkillListener(){
 }
 
 function addMouseLeaveSkillListener(){
+  //adds a mouseleave that when triggered checks to see if interval has been completed
   document.querySelectorAll('.--skill-list-item').forEach(item => {
     item.addEventListener('mouseleave', checkForCompleted)
   })
 }
 
 function addCaretDownListener(){
+  //adds click listener to caret to open projects div and populate with current skill
+  //related projects
   document.querySelector('.--caret-down').addEventListener('click', openMatchingProjects)
 }
 
+//UNFINISHED FUNCTION TO OPEN THE PROJECTS DIV
 function openMatchingProjects(){
-  console.log('lets open this')
+  const currSkill = document.getElementById('info-skill-name').textContent;
+  buildProjectsContainer(currSkill.toLowerCase())
 }
 
+//Function that builds out the skills container after skill selection
 async function buildInfoContainer(event){
+      //start the hovering timeout
       isHovering = true;
+      //begin timeout
       timeout = setTimeout(async ()=>{
+        //empty the info container
         infoContainerEl.innerHTML = '';
+        //save the selected skill hovered in skill buttons
         const selectedSkill = event.target.dataset.name;
+        //filters the selected skills out of all the skill useful info array
         const fullSkillInfoObj = fullSkillsEl.filter(ele => {
           return selectedSkill === ele.name
         })
+        //calls function to deteremine how much time has passed from learned to now
         const known = calculateTimeSpent(fullSkillInfoObj[0].timeSpent)
+
+        //This section builds the elements needed using the info out of fullSkillInfoObj
         infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
         infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
         let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
@@ -174,8 +176,12 @@ async function buildInfoContainer(event){
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['number', 'grid-center-item'], text:`${fullSkillInfoObj[0].numOfProjects}`}))
         infoContainerEl.append(buildSingleElement({ele:'p', classes:['production', 'grid-center-item'], text:'In Production'}))
         infoContainerEl.append(buildSingleElement({ele:'button', id:'info-caret', classes:['--info-caret', 'grid-center-item']}))
+        
+        //assigns a var for the caret element on the DOM
         let caretEl = document.getElementById('info-caret')
+        //adds an img to the element
         caretEl.append(buildSingleElement({ele:'img', id:'caret-icon', source:'caret-down', classes:['--caret-down'], name:'caret down'}));
+        //calls a function to add click listener event to this caret
         addCaretDownListener()   
       }, 1000)
        
@@ -190,7 +196,11 @@ function checkForCompleted(){
 }
 
 function buildSingleElement(fullElement){
+  //destructures the object to seperate variables
   const {ele, id, classes, text, source, name,  } = {...fullElement}
+  
+  //uses each variable to create the element, id, any classes, text inside element
+  //source if its an image, and name
   let newElement = document.createElement(ele);
   source == 'animateCSS' ? (newElement.src = `./images/${source}.png`) : (newElement.src = `./images/${source}.svg`);
   name && (newElement.alt = name)
@@ -202,26 +212,105 @@ function buildSingleElement(fullElement){
 }
 
 function calculateTimeSpent(timespent){
+  //gets the current date ISO string
   const now = DateTime.fromISO(new Date().toISOString())
+  //gets the provided date ISO string
   const learned = DateTime.fromISO(timespent.toISOString())
 
+  //calculates the difference of now and learned and places in an object
   const known = now.diff(learned, ['months', 'days']).toObject() //=> { months: 1, days: 2 }
+  //if the object months is more than 11
   if(known.months > 11){
+    //add a years key with the amount of years that go into months
     known.years = Math.floor(known.months/12);
+    //change the months to the remaining months left after years key
     known.months = known.months%12;
   }
+  //round days to the nearest whole number
   known.days = Math.round(known.days)
   return known
 }
-
-// function testImg(){
-//   const imgEl = document.createElement('img')
-//   imgEl.src = usefulInformationArr[24].imageUrl;
-//   testEl.append(imgEl)
-// }
 
 /* SKLZ INFO COMPONENT */
 renderBackground()
 renderTechNavLinks()
 
-// testImg()
+/* PROJECTS CONTAINER */
+function calculatePercentages(languages){
+  const sumValues = Object.values(languages).reduce((a, b) => a + b, 0);
+  languages.total = sumValues;
+  Object.keys(languages).forEach(function(key, index) {
+    languages[key] = parseFloat((languages[key]/languages.total)*100).toFixed(2);
+  });
+  return languages
+}
+
+function buildProjectsContainer(skill){
+  projectInfoContainerEl.append(buildSingleElement({ele:'div', id:'project-div', classes:['--project-div', 'slate-bg']}))
+  const projectDivEl = document.getElementById('project-div');
+  projectDivEl.append(buildSingleElement({ele:'h1', classes:['--project-title', 'thin-stroke'], text:`CHECK OUT SOME PROJECTS I'VE DONE IN REACT`}))
+  const neededProjectsArr = projectsArr.filter(item => {
+    return item.dependencies.includes(skill)
+  })
+  const projectsHtmlEl = neededProjectsArr.map(item => {
+    const langPercentageObj = calculatePercentages(item.languages)
+    let keyOne = Object.keys(langPercentageObj)[0];
+    let keyTwo = Object.keys(langPercentageObj)[1];
+    let keyThree = Object.keys(langPercentageObj)[2]; 
+    return ` <div id="project-name-card" class="--project-card flex flex-wrap">
+                <div id="project-image-div" class="--project-image-div">
+                  <a href='${item.liveAt}'>
+                    <img id="project-image" class="--project-image" src="./src/images/placeholder.jpg" alt="thumbnail for ${item.name} project">
+                  </a>
+                </div>
+                <div id="project-data" class="--project-data-div">
+                  <div class="progress">
+                    <div class="progress-bar ${keyOne == 'JavaScript' ? 'bg-warning' : keyOne == 'CSS' ? 'bg-royal' : keyOne == 'HTML' ? 'bg-danger' :  'bg-typescript'}" role="progressbar" style="width:${langPercentageObj[keyOne]}%" aria-valuenow="${langPercentageObj[keyOne]}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar ${keyTwo == 'JavaScript' ? 'bg-warning' : keyTwo == 'CSS' ? 'bg-royal' : keyTwo == 'HTML' ? 'bg-danger' :  'bg-typescript'}" role="progressbar" style="width:${langPercentageObj[keyTwo]}%" aria-valuenow="${langPercentageObj[keyTwo]}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar ${keyThree == 'JavaScript' ? 'bg-warning' : keyThree == 'CSS' ? 'bg-royal' : keyThree == 'HTML' ? 'bg-danger' :  'bg-typescript'}" role="progressbar" style="width:${langPercentageObj[keyThree]}%" aria-valuenow="${langPercentageObj[keyThree]}" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <ul id="progress-data" class="--progress-data flex flex-wrap">
+                    <li class="--lang-1 ${keyOne == 'JavaScript' ? 'js' : keyOne == 'CSS' ? 'css' : keyOne == 'HTML' ? 'html' :  'ts'} black-text XXPT bold">${keyOne} <span class="--lang-percentage XVIPT">${langPercentageObj[keyOne]}%</span></li>
+                    <li class="--lang-2 ${keyTwo == 'JavaScript' ? 'js' : keyTwo == 'CSS' ? 'css' : keyTwo == 'HTML' ? 'html' :  'ts'} black-text XXPT bold">${keyTwo} <span class="--lang-percentage XVIPT">${langPercentageObj[keyTwo]}%</span></li>
+                    <li class="--lang-3 ${keyThree == 'JavaScript' ? 'js' : keyThree == 'CSS' ? 'css' : keyThree == 'HTML' ? 'html' :  'ts'} black-text XXPT bold">${keyThree} <span class="--lang-percentage XVIPT">${langPercentageObj[keyThree]}%</span></li>
+                  </ul>
+                  <h2 class="XXXIIPT thin-stroke">${item.name.toUpperCase()}</h2>
+                  <div id="github-div" class="--github-div flex">
+                    <p class="thin-stroke">${DateTime.fromISO(item.createdAt).toFormat('MMM dd, yyyy')}</p>
+                    <a id='github-link' class='--github-link' href="${item.githubLocation}">
+                      <img id='code-fork' class='--code-fork' src="src/images/code-fork-solid.png" alt="repo link">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>`
+  }).join(' ')
+  projectDivEl.innerHTML = projectsHtmlEl
+  // <div id="project-div" class="--project-div slate-bg">
+  //           <h1 class="--project-title thin-stroke">CHECK OUT SOME PROJECTS I'VE DONE IN REACT</h1>
+  //           <div id="project-name-card" class="--project-card flex flex-wrap">
+  //             <div id="project-image-div" class="--project-image-div">
+  //               <img id="project-image" class="--project-image" src="./src/images/placeholder.jpg" alt="placeholder">
+  //             </div>
+  //             <div id="project-data" class="--project-data-div">
+  //               <div class="progress">
+  //                 <div class="progress-bar bg-warning" role="progressbar" style="width:52.2%" aria-valuenow="52.2" aria-valuemin="0" aria-valuemax="100"></div>
+  //                 <div class="progress-bar bg-royal" role="progressbar" style="width: 39.7%" aria-valuenow="39.7" aria-valuemin="0" aria-valuemax="100"></div>
+  //                 <div class="progress-bar bg-danger" role="progressbar" style="width: 8.1%" aria-valuenow="8.1" aria-valuemin="0" aria-valuemax="100"></div>
+  //               </div>
+  //               <ul id="progress-data" class="--progress-data flex flex-wrap">
+  //                 <li class="--lang-1 js black-text XXPT bold">JavaScript <span class="--lang-percentage XVIPT">52.2%</span></li>
+  //                 <li class="--lang-2 css black-text XXPT bold">CSS <span class="--lang-percentage XVIPT">39.7%</span></li>
+  //                 <li class="--lang-3 html black-text XXPT bold">HTML5 <span class="--lang-percentage XVIPT">8.0%</span></li>
+  //               </ul>
+  //               <h2 class="XXXIIPT thin-stroke">Project Title</h2>
+  //               <div id="github-div" class="--github-div flex">
+  //                 <p class="thin-stroke">May 28, 2023</p>
+  //                 <a id='github-link' class='--github-link' href="#">
+  //                   <img id='code-fork' class='--code-fork' src="src/images/code-fork-solid.png" alt="repo link">
+  //                 </a>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
+}

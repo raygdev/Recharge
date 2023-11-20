@@ -27,15 +27,26 @@ async function getLanguages(ele){
     return reservedWord.data
 }
 
-//Not working for saving a screengrab image
-// async function getScreenGrab(ele){
-//     if(ele.name == 'ImOnIt'){
-//         const imageEle = await octokit.request(`GET ${ele.downloads_url}`)
-//         console.log(imageEle);
-//         return imageEle
-//     }
-   
-// }
+async function getScreenGrab(ele){
+    octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+        owner: 'RawleJuglal',
+        repo: ele.name,
+        //specify the file path that you want the content of
+        path: 'src/assets/screengrab/screengrab.png',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28',
+          //set the accept header for raw content
+          //similar to the url for the quick solution
+          //otherwise it is base64 encoded and requires a little
+          //more code
+          'accept': 'application/vnd.github.raw'
+        }
+      }).then(response => {
+          //response.data is going to be the stringified json...
+          //we need to parse it to turn into an object
+          console.log(response)
+        })
+}
 
 async function getDependencies(ele){
     try {
@@ -97,7 +108,7 @@ let usefulInformationArr = repos.map(async ele => {
         githubLocation:ele.html_url,
         languages: await getLanguages(ele),
         liveAt:ele.homepage,
-        imageUrl: '',
+        imageUrl: await getScreenGrab(ele),
         dependencies: await getDependencies(ele)
     }
 })
@@ -107,9 +118,5 @@ const usefulInfo = async () => {
     return await Promise.all(usefulInformationArr)
     
 }
-
-// usefulInfo().then(data => {
-//     return data
-// })
 
 export { repos, usefulInfo, usefulInformationArr }
