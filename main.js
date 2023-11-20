@@ -257,10 +257,12 @@ function buildProjectsContainer(skill){
     let keyOne = Object.keys(langPercentageObj)[0];
     let keyTwo = Object.keys(langPercentageObj)[1];
     let keyThree = Object.keys(langPercentageObj)[2]; 
+
+
     return ` <div id="project-name-card" class="--project-card flex flex-wrap">
                 <div id="project-image-div" class="--project-image-div">
                   <a href='${item.liveAt}'>
-                    <img id="project-image" class="--project-image" src="./src/images/placeholder.jpg" alt="thumbnail for ${item.name} project">
+                    <img id="project-image" class="--project-image" src="data:image/png;base64${item.imageUrl}" alt="thumbnail for ${item.name} project">
                   </a>
                 </div>
                 <div id="project-data" class="--project-data-div">

@@ -28,7 +28,7 @@ async function getLanguages(ele){
 }
 
 async function getScreenGrab(ele){
-    octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const screengrabData = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'RawleJuglal',
         repo: ele.name,
         //specify the file path that you want the content of
@@ -39,13 +39,16 @@ async function getScreenGrab(ele){
           //similar to the url for the quick solution
           //otherwise it is base64 encoded and requires a little
           //more code
-          'accept': 'application/vnd.github.raw'
+        //   'accept': 'application/vnd.github.raw'
         }
-      }).then(response => {
+      })
+      .then(response => {
           //response.data is going to be the stringified json...
           //we need to parse it to turn into an object
-          console.log(response)
+            return response
         })
+       console.log(btoa(String.fromCharCode.apply(null, new Uint8Array(screengrabData.data))))  
+    return btoa(String.fromCharCode.apply(null, new Uint8Array(screengrabData.data)));
 }
 
 async function getDependencies(ele){
