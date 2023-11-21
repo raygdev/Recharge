@@ -27,30 +27,6 @@ async function getLanguages(ele){
     return reservedWord.data
 }
 
-async function getScreenGrab(ele){
-    const screengrabData = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-        owner: 'RawleJuglal',
-        repo: ele.name,
-        //specify the file path that you want the content of
-        path: 'src/assets/screengrab/screengrab.png',
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28',
-          //set the accept header for raw content
-          //similar to the url for the quick solution
-          //otherwise it is base64 encoded and requires a little
-          //more code
-        //   'accept': 'application/vnd.github.raw'
-        }
-      })
-      .then(response => {
-          //response.data is going to be the stringified json...
-          //we need to parse it to turn into an object
-            return response
-        })
-       console.log(btoa(String.fromCharCode.apply(null, new Uint8Array(screengrabData.data))))  
-    return btoa(String.fromCharCode.apply(null, new Uint8Array(screengrabData.data)));
-}
-
 async function getDependencies(ele){
     try {
         const dependecies = await fetch(`https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/package.json`)
@@ -111,7 +87,7 @@ let usefulInformationArr = repos.map(async ele => {
         githubLocation:ele.html_url,
         languages: await getLanguages(ele),
         liveAt:ele.homepage,
-        imageUrl: await getScreenGrab(ele),
+        imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
         dependencies: await getDependencies(ele)
     }
 })
