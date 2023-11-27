@@ -85,7 +85,20 @@ a:hover{
 	color:var(--magenta);
 }
 
+
+/* ANIMATIONS */
+@keyframes slide-in {
+    100% {
+        transform: translateY(0%)
+    }
+}
+
 /*Utility Classes*/
+.hidden{ display:none;}
+.show{display: block;}
+.grid{display:grid;}
+
+
 .secondary-font{font-family:var(--secondary-font)}
 .VIIIPT{font-size: var(--VIIIPX);}
 .XIIPT{font-size:var(--XIIPX);}
@@ -205,18 +218,21 @@ a:hover{
 .status{grid-area: l;}
 .production{grid-area: m;}
 .--info-caret{grid-area: n;}
+.--back-btn{grid-area:o;}
 
 .--info-container, .--project-container{
 	color:white;
-	margin:6rem 1rem 1rem;
+	
 }
 
 .--info-container{
 	display:grid;
+	margin:6rem 1rem 0rem;
+	padding:1rem 1rem;
 	-webkit-text-stroke: 1px #131313;
 	grid-template-rows:3rem 3rem 3rem 2rem 2rem repeat(11, 2rem) 1.5rem;
 	grid-template-areas: 
-	" a . . . "
+	" a . . o "
 	" b . . . "
 	" c c c c "
 	" g g g g "
@@ -236,19 +252,20 @@ a:hover{
 	" n n n n ";
 }
 
-.--info-caret{
+.--info-caret, .--back-btn{
 	padding-top:.75rem;
+	color:var(--white);
 	background-color:transparent;
 	outline:none;
 	border:none;
 	width:3em;
 }
 
-.--info-caret:hover{
+.--info-caret:hover, .--back-btn:hover{
 	cursor: pointer;
 }
 
-.--caret-down{
+.--caret-down, .--caret-left{
 	width:100%;
 }
 
@@ -257,6 +274,10 @@ a:hover{
 }
 
 /* Projects Section */
+.--project-container{
+	margin:0rem 1rem;
+}
+
 .--project-card{
 	gap:1rem;
 	margin-top:var(--XXPX);
@@ -338,7 +359,7 @@ li span.--lang-percentage{
 	.--info-container{
 		grid-template-rows:3rem 3rem 3rem 2rem 2rem 4rem;
 		grid-template-areas: 
-	" a . . . "
+	" a . . o "
 	" b . . . "
 	" c d e f "
 	" g h i j "

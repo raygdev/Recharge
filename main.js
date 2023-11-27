@@ -14,6 +14,7 @@ const timeDataEl = document.getElementById('time-data')
 const weatherIconEl = document.getElementById('weather-container')
 const techNavEl = document.getElementById('tech-nav')
 const authDataLinkEl = document.getElementById('auth-link')
+const skillsContainerEl = document.getElementById('skills-container')
 const filteredSkillsListEl = document.getElementById('filtered-skills-list')
 const infoContainerEl = document.getElementById('info-container')
 const projectInfoContainerEl = document.getElementById('project-container')
@@ -159,7 +160,14 @@ async function buildInfoContainer(event){
         const known = calculateTimeSpent(fullSkillInfoObj[0].timeSpent)
 
         //This section builds the elements needed using the info out of fullSkillInfoObj
+        //ANIMATE OPENING OF INFO CONTAINER
+        // infoContainerEl.animate()
         infoContainerEl.append(buildSingleElement({ele:'h1', id:'info-title', classes:['--info-title', 'XXXIIPT', 'thick-stroke'], text:'SKLZ'}))
+        const infoTitleEl = document.getElementById('info-title');
+        infoTitleEl.after(buildSingleElement({ele:'button', id:'back-btn', classes:['--back-btn', 'hidden', 'flex-align-center', 'XXXIIPT'], text:`Back`}))
+        let backEl = document.getElementById('back-btn')
+        backEl.prepend(buildSingleElement({ele:'img', id:'return-icon', source:'caret-left', classes:['--caret-left'], name:'caret left'}));
+        backEl.addEventListener('click', backToSkills);
         infoContainerEl.append(buildSingleElement({ele:'div', id:'', classes:['--info-grid-b'], text:''}))
         let infoGridBEl = document.getElementsByClassName('--info-grid-b')[0]
         infoGridBEl.append(buildSingleElement({ele:'img', id:'info-icon', source:selectedSkill == 'animate css' ? 'animateCSS' : selectedSkill, name:selectedSkill}))
@@ -207,7 +215,7 @@ function buildSingleElement(fullElement){
   id && (newElement.id = id);
   classes && (newElement.classList.add(...classes))
   id=='percentage' && text ? (newElement.textContent = `${text.toUpperCase()}${text.toUpperCase() == 'N/A' ? '' : '%'}`) : text && (newElement.textContent = text.toUpperCase());
-  ele=='img' && id == 'caret-icon' ? (newElement.src = `./images/${source}.png`) : '';
+  ele=='img' && id == 'caret-icon' || ele == 'img' && id == 'return-icon' ? (newElement.src = `./images/${source}.png`) : '';
   return newElement
 }
 
@@ -237,15 +245,40 @@ renderTechNavLinks()
 
 /* PROJECTS CONTAINER */
 function calculatePercentages(languages){
+  console.log(languages)
   const sumValues = Object.values(languages).reduce((a, b) => a + b, 0);
-  languages.total = sumValues;
+  const calcLanguage = {};
+  
+
   Object.keys(languages).forEach(function(key, index) {
-    languages[key] = parseFloat((languages[key]/languages.total)*100).toFixed(2);
+    calcLanguage[key] = parseFloat((languages[key]/sumValues)*100).toFixed(2);
   });
-  return languages
+  calcLanguage.total = sumValues;
+  return calcLanguage;
 }
 
 function buildProjectsContainer(skill){
+  skill = skill == 'iconscout' ? '@iconscout/react-unicons' : 
+          skill == 'animate css' ? 'animate.css' : 
+          skill == 'confettijs' ? 'confetti-js' : 
+          skill == 'reactjs' ? 'react' : skill;
+  //change the info container grey to match projects
+  infoContainerEl.classList.add('slate-bg');
+
+  //add a back button to navigate back to skills options
+  const backBtnEl = document.getElementById('back-btn');
+  backBtnEl.classList.remove('hidden');
+  backBtnEl.classList.add('flex');
+
+  //hide the caret-down 
+  const caretDownEl = document.getElementById('info-caret');
+  caretDownEl.classList.add('hidden');
+
+  //hide the skills
+  skillsContainerEl.classList.add('hidden');
+
+
+  //render the projects div information
   projectInfoContainerEl.append(buildSingleElement({ele:'div', id:'project-div', classes:['--project-div', 'slate-bg']}))
   const projectDivEl = document.getElementById('project-div');
   projectDivEl.append(buildSingleElement({ele:'h1', classes:['--project-title', 'thin-stroke'], text:`CHECK OUT SOME PROJECTS I'VE DONE IN REACT`}))
@@ -287,32 +320,22 @@ function buildProjectsContainer(skill){
               </div>
             </div>`
   }).join(' ')
-  projectDivEl.innerHTML = projectsHtmlEl
-  // <div id="project-div" class="--project-div slate-bg">
-  //           <h1 class="--project-title thin-stroke">CHECK OUT SOME PROJECTS I'VE DONE IN REACT</h1>
-  //           <div id="project-name-card" class="--project-card flex flex-wrap">
-  //             <div id="project-image-div" class="--project-image-div">
-  //               <img id="project-image" class="--project-image" src="./src/images/placeholder.jpg" alt="placeholder">
-  //             </div>
-  //             <div id="project-data" class="--project-data-div">
-  //               <div class="progress">
-  //                 <div class="progress-bar bg-warning" role="progressbar" style="width:52.2%" aria-valuenow="52.2" aria-valuemin="0" aria-valuemax="100"></div>
-  //                 <div class="progress-bar bg-royal" role="progressbar" style="width: 39.7%" aria-valuenow="39.7" aria-valuemin="0" aria-valuemax="100"></div>
-  //                 <div class="progress-bar bg-danger" role="progressbar" style="width: 8.1%" aria-valuenow="8.1" aria-valuemin="0" aria-valuemax="100"></div>
-  //               </div>
-  //               <ul id="progress-data" class="--progress-data flex flex-wrap">
-  //                 <li class="--lang-1 js black-text XXPT bold">JavaScript <span class="--lang-percentage XVIPT">52.2%</span></li>
-  //                 <li class="--lang-2 css black-text XXPT bold">CSS <span class="--lang-percentage XVIPT">39.7%</span></li>
-  //                 <li class="--lang-3 html black-text XXPT bold">HTML5 <span class="--lang-percentage XVIPT">8.0%</span></li>
-  //               </ul>
-  //               <h2 class="XXXIIPT thin-stroke">Project Title</h2>
-  //               <div id="github-div" class="--github-div flex">
-  //                 <p class="thin-stroke">May 28, 2023</p>
-  //                 <a id='github-link' class='--github-link' href="#">
-  //                   <img id='code-fork' class='--code-fork' src="src/images/code-fork-solid.png" alt="repo link">
-  //                 </a>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
+  
+  projectDivEl.innerHTML = projectsHtmlEl == '' ? `<div id="project-name-card" class="--project-card flex flex-wrap"><p>Currently Rawle is not displaying any projects with this skill</p></div>` : projectsHtmlEl;
+}
+
+function backToSkills(){
+  //show the skills container
+  skillsContainerEl.classList.add('show');
+
+  //show the caret down
+  const caretDownEl = document.getElementById('info-caret');
+  caretDownEl.classList.remove('hidden');
+
+  //hide the back btn
+  const backBtnEl = document.getElementById('back-btn')
+  backBtnEl.classList.remove('flex');
+  backBtnEl.classList.add('hidden');
+
+  projectInfoContainerEl.innerHTML = ''
 }

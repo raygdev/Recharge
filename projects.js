@@ -79,10 +79,14 @@ async function getDependencies(ele){
     }
 }
 
+function decodeName(codedName){
+    return codedName.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+}
+
 let usefulInformationArr = repos.map(async ele => {
     return {
         id:ele.id,
-        name: ele.name,
+        name: decodeName(ele.name),
         createdAt: ele.created_at,
         githubLocation:ele.html_url,
         languages: await getLanguages(ele),
