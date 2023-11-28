@@ -87,9 +87,79 @@ a:hover{
 
 
 /* ANIMATIONS */
+@keyframes roll-out {
+	from{
+		visibility: visible;
+		transform: translateX(0%);
+	}
+
+    to {
+		visibility: hidden;
+        transform: translateX(-100%)
+    }
+}
+
+@keyframes roll-in {
+	from{
+		transform: translateX(-100%);
+	}
+
+    to {
+        transform: translateX(0%)
+    }
+}
+
 @keyframes slide-in {
-    100% {
+	from{
+		transform: translateY(1000px);
+	}
+
+    to {
         transform: translateY(0%)
+    }
+}
+
+@keyframes move-up {
+	from{
+		transform: translateY(0);
+	}
+
+    to {
+        transform: translateY(-100%)
+    }
+}
+
+@keyframes move-down {
+	from{
+		transform: translateY(-100%);
+	}
+
+    to {
+        transform: translateY(0%)
+    }
+}
+
+@keyframes follow-up {
+	from{
+		visibility: hidden;
+		transform: translateY(1000px);
+	}
+
+    to {
+		visibility: visible;
+        transform: translateY(-16%)
+    }
+}
+
+@keyframes follow-down {
+	from{
+		visibility: visible;
+		transform: translateY(-16%);
+	}
+
+    to {
+		visibility: hidden;
+        transform: translateY(1000px)
     }
 }
 
@@ -173,9 +243,17 @@ a:hover{
 	border-radius:.935rem;
 }
 
+
 .--filtered-skills-list{
 	gap:1rem;
 	margin:2rem 2rem;
+}
+
+.--skills-container.collapsed{
+	animation:roll-out 1s ease-in-out forwards;
+}
+.--skills-container.expanded{
+	animation: roll-in 1s ease-in-out 1.5s backwards;
 }
 
 .--skill-list-item{
@@ -226,7 +304,7 @@ a:hover{
 }
 
 .--info-container{
-	display:grid;
+	display:none;
 	margin:6rem 1rem 0rem;
 	padding:1rem 1rem;
 	-webkit-text-stroke: 1px #131313;
@@ -252,6 +330,19 @@ a:hover{
 	" n n n n ";
 }
 
+.--info-container.expanded{
+	display:grid;
+	animation: slide-in 2s ease-in-out;
+}
+
+.--info-container.move-up{
+	animation:move-up 1s ease-in-out 1s forwards
+}
+
+.--info-container.move-down{
+	animation: move-down 2s ease-in-out forwards;
+}
+
 .--info-caret, .--back-btn{
 	padding-top:.75rem;
 	color:var(--white);
@@ -275,7 +366,16 @@ a:hover{
 
 /* Projects Section */
 .--project-container{
+	visibility: hidden;
 	margin:0rem 1rem;
+}
+
+.--project-container.expanded{
+	animation:follow-up	1s ease-in-out 2s forwards;
+}
+
+.--project-container.collapsed{
+	animation: follow-down 1s ease-in-out forwards;
 }
 
 .--project-card{

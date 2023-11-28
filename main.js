@@ -149,6 +149,7 @@ async function buildInfoContainer(event){
       //begin timeout
       timeout = setTimeout(async ()=>{
         //empty the info container
+        infoContainerEl.classList.add('expanded');
         infoContainerEl.innerHTML = '';
         //save the selected skill hovered in skill buttons
         const selectedSkill = event.target.dataset.name;
@@ -245,7 +246,6 @@ renderTechNavLinks()
 
 /* PROJECTS CONTAINER */
 function calculatePercentages(languages){
-  console.log(languages)
   const sumValues = Object.values(languages).reduce((a, b) => a + b, 0);
   const calcLanguage = {};
   
@@ -262,6 +262,16 @@ function buildProjectsContainer(skill){
           skill == 'animate css' ? 'animate.css' : 
           skill == 'confettijs' ? 'confetti-js' : 
           skill == 'reactjs' ? 'react' : skill;
+
+  //hide the skills container
+  skillsContainerEl.classList.remove('expanded');
+  skillsContainerEl.classList.add('collapsed');
+
+  //move the info container up
+  infoContainerEl.classList.remove('move-down');
+  infoContainerEl.classList.add('move-up');
+
+
   //change the info container grey to match projects
   infoContainerEl.classList.add('slate-bg');
 
@@ -274,11 +284,8 @@ function buildProjectsContainer(skill){
   const caretDownEl = document.getElementById('info-caret');
   caretDownEl.classList.add('hidden');
 
-  //hide the skills
-  skillsContainerEl.classList.add('hidden');
-
-
   //render the projects div information
+  projectInfoContainerEl.classList.add('expanded');
   projectInfoContainerEl.append(buildSingleElement({ele:'div', id:'project-div', classes:['--project-div', 'slate-bg']}))
   const projectDivEl = document.getElementById('project-div');
   projectDivEl.append(buildSingleElement({ele:'h1', classes:['--project-title', 'thin-stroke'], text:`CHECK OUT SOME PROJECTS I'VE DONE IN REACT`}))
@@ -326,8 +333,11 @@ function buildProjectsContainer(skill){
 
 function backToSkills(){
   //show the skills container
-  skillsContainerEl.classList.add('show');
-
+  projectInfoContainerEl.classList.remove('expanded');
+  projectInfoContainerEl.classList.add('collapsed');
+  infoContainerEl.classList.add('move-down');
+  skillsContainerEl.classList.add('expanded');
+  
   //show the caret down
   const caretDownEl = document.getElementById('info-caret');
   caretDownEl.classList.remove('hidden');
@@ -337,5 +347,14 @@ function backToSkills(){
   backBtnEl.classList.remove('flex');
   backBtnEl.classList.add('hidden');
 
-  projectInfoContainerEl.innerHTML = ''
+  
+  
+  setTimeout(()=>{
+    projectInfoContainerEl.innerHTML = '';
+    projectInfoContainerEl.classList.remove('expanded', 'collapsed');
+    infoContainerEl.classList.remove('move-up');
+    skillsContainerEl.classList.remove('collapse');
+    
+  },1500)
+  
 }
