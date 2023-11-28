@@ -109,4 +109,4 @@ const getDependencies = async (event) => {
   }
 }
 
-module.exports = { getRepos, getLanguages, getDependencies  }
+export { getRepos, getLanguages, getDependencies  }
