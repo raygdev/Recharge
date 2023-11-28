@@ -15,7 +15,7 @@
 //    return res.data.filter(ele => !ele.archived)
 //   })
 
-import {getRepos, getLanguages, getDependencies} from './netlify/functions/fetchGithubAPI.js'
+import { getRepos, getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI'
 
 const repos = getRepos()
 
