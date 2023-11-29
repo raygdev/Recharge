@@ -17,6 +17,7 @@ export const getRepos = async (event) => {
       console.log(res)
      return res.data.filter(ele => !ele.archived)
     })
+    console.log(repos)
     return {
       statusCode: 200,
       body: JSON.stringify({ reply: repos.data }),
