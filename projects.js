@@ -76,6 +76,7 @@ async function getDependencies(ele){
                 return currDep;
             }
         })
+        console.log(dependecies)
         return dependecies;
     } catch (error) {
        console.log('im in the error')
