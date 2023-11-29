@@ -86,24 +86,23 @@ function decodeName(codedName){
     return codedName.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 }
 
-
+let usefulInformationArr = repos.map(async ele => {
+    return {
+        id:ele.id,
+        name: decodeName(ele.name),
+        createdAt: ele.created_at,
+        githubLocation:ele.html_url,
+        languages: await getLanguages(ele),
+        liveAt:ele.homepage,
+        imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
+        dependencies: await getDependencies(ele)
+    }
+})
 
 const usefulInfo = async () => { 
-    let usefulInformationArr = repos.map(async ele => {
-        return {
-            id:ele.id,
-            name: decodeName(ele.name),
-            createdAt: ele.created_at,
-            githubLocation:ele.html_url,
-            languages: await getLanguages(ele),
-            liveAt:ele.homepage,
-            imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
-            dependencies: await getDependencies(ele)
-        }
-    })
 
-    return usefulInformationArr;
+    return await Promise.all(usefulInformationArr)
     
 }
 
-export { repos, usefulInfo }
+export { repos, usefulInfo, usefulInformationArr }
