@@ -19,6 +19,7 @@ async function fetchPopularity (skill){
 
 async function calculateNumberOfProjects(skill){
     return usefulInfo().then(data => {
+        console.log(data)
        const selectedProjects =  data.filter(ele => {
             // console.log(ele.dependencies)
             if(ele.dependencies.includes(skill)){
