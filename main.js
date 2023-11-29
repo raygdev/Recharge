@@ -321,7 +321,7 @@ function buildProjectsContainer(skill){
                   <div id="github-div" class="--github-div flex">
                     <p class="thin-stroke">${DateTime.fromISO(item.createdAt).toFormat('MMM dd, yyyy')}</p>
                     <a id='github-link' class='--github-link' href="${item.githubLocation}">
-                      <img id='code-fork' class='--code-fork' src="src/images/code-fork-solid.png" alt="repo link">
+                      <img id='code-fork' class='--code-fork' src="/images/code-fork-solid.png" alt="repo link">
                     </a>
                   </div>
                 </div>
