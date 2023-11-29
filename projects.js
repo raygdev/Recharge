@@ -92,10 +92,10 @@ let usefulInformationArr = repos.map(async ele => {
         name: decodeName(ele.name),
         createdAt: ele.created_at,
         githubLocation:ele.html_url,
-        languages: getLanguages(ele).then(data => console.log(data)),
+        languages: getLanguages(ele).then(data => data),
         liveAt:ele.homepage,
         imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
-        dependencies: getDependencies(ele).then(data => console.log(data))
+        dependencies: getDependencies(ele).then(data => data)
     }
 })
 
