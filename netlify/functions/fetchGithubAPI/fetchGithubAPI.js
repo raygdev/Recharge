@@ -14,13 +14,11 @@ export const getRepos = async (event) => {
       }
     })
     .then(res => {
-      console.log(res)
      return res.data.filter(ele => !ele.archived)
     })
-    console.log(repos)
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: repos.data }),
+      body: JSON.stringify({ reply: repos }),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },
       // isBase64Encoded: true,
