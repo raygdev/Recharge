@@ -14,6 +14,7 @@ export const getRepos = async (event) => {
       }
     })
     .then(res => {
+      console.log(res)
      return res.data.filter(ele => !ele.archived)
     })
     return {
