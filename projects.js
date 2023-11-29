@@ -17,7 +17,7 @@ import { getRepos , getLanguages, getDependencies } from './netlify/functions/fe
 //   })
 
 
-const repos = getRepos()
+const repos = await getRepos()
 
 // async function getLanguages(ele){
 //     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
@@ -92,10 +92,10 @@ let usefulInformationArr = repos.map(async ele => {
         name: decodeName(ele.name),
         createdAt: ele.created_at,
         githubLocation:ele.html_url,
-        languages: getLanguages(ele).then(data => data),
+        languages: await getLanguages(ele),
         liveAt:ele.homepage,
         imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
-        dependencies: getDependencies(ele).then(data => data)
+        dependencies: await getDependencies(ele)
     }
 })
 
