@@ -93,7 +93,7 @@ const usefulInfo = async () => {
     
     let usefulInformationArr = info.reply.map(async ele => {
         const unparsedLang = await getLanguages(ele);
-        const parsedLang = JSON.parse(unparsedLang)
+        const parsedLang = JSON.parse(unparsedLang.body)
         return {
             id:ele.id,
             name: decodeName(ele.name),
