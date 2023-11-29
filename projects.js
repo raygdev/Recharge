@@ -18,7 +18,7 @@ import { getRepos , getLanguages, getDependencies } from './netlify/functions/fe
 
 
 const repos = await getRepos()
-console.log(repos)
+
 // async function getLanguages(ele){
 //     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
 //         username:'RawleJuglal',
@@ -89,7 +89,8 @@ function decodeName(codedName){
 
 
 const usefulInfo = async () => { 
-    let usefulInformationArr = repos.body.reply.map(async ele => {
+    const info = JSON.parse(repos.body);
+    let usefulInformationArr = info.reply.map(async ele => {
         return {
             id:ele.id,
             name: decodeName(ele.name),
