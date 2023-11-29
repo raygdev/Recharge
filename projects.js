@@ -1,4 +1,4 @@
-import { getRepos, getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
+import { getRepos , getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
 // import { Octokit } from "octokit";
 
 // const octokit = new Octokit({

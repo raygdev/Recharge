@@ -4,7 +4,7 @@ const octokit = new Octokit({
     auth: process.env.Github_API
   })
 
-const getRepos = async (event) => {
+export const getRepos = async (event) => {
   try {
     const repos = await octokit.request('GET /users/{username}/repos', {
       username: 'RawleJuglal',
@@ -28,7 +28,7 @@ const getRepos = async (event) => {
   }
 }
 
-const getLanguages = async (event) => {
+export const getLanguages = async (event) => {
   try {
     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
         username:'RawleJuglal',
@@ -49,7 +49,7 @@ const getLanguages = async (event) => {
   }
 }
 
-const getDependencies = async (event) => {
+export const getDependencies = async (event) => {
   try {
     const dependecies = await fetch(`https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/package.json`)
         .then(res => {
@@ -107,4 +107,4 @@ const getDependencies = async (event) => {
   }
 }
 
-module.exports =  { getRepos, getLanguages, getDependencies  }
+// module.exports =  { getRepos, getLanguages, getDependencies  }
