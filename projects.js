@@ -89,7 +89,7 @@ function decodeName(codedName){
 
 
 const usefulInfo = async () => { 
-    let usefulInformationArr = repos.map(async ele => {
+    let usefulInformationArr = repos.body.reply.map(async ele => {
         return {
             id:ele.id,
             name: decodeName(ele.name),
