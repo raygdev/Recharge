@@ -1,4 +1,4 @@
-import { getRepos , getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
+import { getRepos , getLanguages } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
 // import { Octokit } from "octokit";
 
 // const octokit = new Octokit({
@@ -30,57 +30,57 @@ const repos = await getRepos()
 //     return reservedWord.data
 // }
 
-// async function getDependencies(ele){
-//     try {
-//         const dependecies = await fetch(`https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/package.json`)
-//         .then(res => {
-//             if(res.ok){
-//                 return res.json()
-//             } else {
-//                 return null;
-//             }
-//         })
-//         .then(data => {
-//             if(data){
-//                 const figmaDesigns = [
-//                     'reactstatic', 
-//                     'digitalbusinesscard',
-//                     'airbnbclone',
-//                     'traveljournal',
-//                     'memegenerator', 
-//                     'tenzies',
-//                     'quizzical',
-//                     'moviewatchlist',
-//                     'scoreboard',
-//                     'passwordgenerator',
-//                     'unitconverter',
-//                     'oldagram',
-//                     'restaurant',
-//                     'hotspots',
-//                     'Learningjournal',
-//                     'homereadyrenovations',
-//                     'pollyglot',
-//                 ]
+async function getDependencies(ele){
+    try {
+        const dependecies = await fetch(`https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/package.json`)
+        .then(res => {
+            if(res.ok){
+                return res.json()
+            } else {
+                return null;
+            }
+        })
+        .then(data => {
+            if(data){
+                const figmaDesigns = [
+                    'reactstatic', 
+                    'digitalbusinesscard',
+                    'airbnbclone',
+                    'traveljournal',
+                    'memegenerator', 
+                    'tenzies',
+                    'quizzical',
+                    'moviewatchlist',
+                    'scoreboard',
+                    'passwordgenerator',
+                    'unitconverter',
+                    'oldagram',
+                    'restaurant',
+                    'hotspots',
+                    'Learningjournal',
+                    'homereadyrenovations',
+                    'pollyglot',
+                ]
 
-//                 let currDep = [];
-//                 if(data.dependencies){
-//                     currDep = [...Object.keys(data.dependencies)]
-//                 }
-//                 if(data.devDependencies){
-//                     currDep = [...currDep, ...Object.keys(data.devDependencies)]
-//                 }
-//                 currDep = [...currDep, 'html5', 'css', 'javascript', 'git']
-//                 if(figmaDesigns.includes(data.name)){
-//                     currDep = [...currDep, 'figma']
-//                 }
-//                 return currDep;
-//             }
-//         })
-//         return dependecies;
-//     } catch (error) {
-//        console.log('im in the error')
-//     }
-// }
+                let currDep = [];
+                if(data.dependencies){
+                    currDep = [...Object.keys(data.dependencies)]
+                }
+                if(data.devDependencies){
+                    currDep = [...currDep, ...Object.keys(data.devDependencies)]
+                }
+                currDep = [...currDep, 'html5', 'css', 'javascript', 'git']
+                if(figmaDesigns.includes(data.name)){
+                    currDep = [...currDep, 'figma']
+                }
+                return currDep;
+            }
+        })
+        return dependecies;
+    } catch (error) {
+       console.log('im in the error')
+    }
+}
 
 function decodeName(codedName){
     return codedName.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
@@ -90,13 +90,15 @@ function decodeName(codedName){
 
 const usefulInfo = async () => { 
     const info = JSON.parse(repos.body);
+    const unparsedLang = await getLanguages(ele);
+    const parsedLang = JSON.parse(unparsedLang)
     let usefulInformationArr = info.reply.map(async ele => {
         return {
             id:ele.id,
             name: decodeName(ele.name),
             createdAt: ele.created_at,
             githubLocation:ele.html_url,
-            languages: await getLanguages(ele),
+            languages: parsedLang,
             liveAt:ele.homepage,
             imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
             dependencies: await getDependencies(ele)
