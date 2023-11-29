@@ -108,7 +108,7 @@ const usefulInfo = async () => {
             dependencies: await getDependencies(ele)
         }
     })
-    return usefulInformationArr
+    return await Promise.all(usefulInformationArr)
     
 }
 
