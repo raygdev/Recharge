@@ -22,6 +22,7 @@ const projectInfoContainerEl = document.getElementById('project-container')
 /*-- Global Variables --*/
 // skills collection promise all function that fills w/ skill array of objects
 const fullSkillsEl =  skillsCollection().then(data => data)
+console.log(fullSkillsEl)
 const projectsArr =  usefulInfo().then(data => data)
 let isHovering = false;
 let timeout;
