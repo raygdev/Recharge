@@ -74,6 +74,8 @@ async function getDependencies(ele){
                     currDep = [...currDep, 'figma']
                 }
                 return currDep;
+            } else {
+                return ['html5', 'css', 'javascript', 'git']
             }
         })
         console.log(dependecies)
