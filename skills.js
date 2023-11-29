@@ -1,5 +1,5 @@
 import {nanoid} from 'nanoid';
-import { usefulInfo, usefulInformationArr } from './projects';
+import { usefulInfo } from './projects';
 
 async function getLatestVersion(packageName){
     /*Getting latest version of package*/
