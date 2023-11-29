@@ -90,15 +90,16 @@ function decodeName(codedName){
 
 const usefulInfo = async () => { 
     const info = JSON.parse(repos.body);
-    const unparsedLang = await getLanguages(ele);
-    const parsedLang = JSON.parse(unparsedLang)
+    
     let usefulInformationArr = info.reply.map(async ele => {
+        const unparsedLang = await getLanguages(ele);
+        const parsedLang = JSON.parse(unparsedLang)
         return {
             id:ele.id,
             name: decodeName(ele.name),
             createdAt: ele.created_at,
             githubLocation:ele.html_url,
-            languages: parsedLang,
+            languages: parsedLang.reply,
             liveAt:ele.homepage,
             imageUrl: `https://raw.githubusercontent.com/RawleJuglal/${ele.name}/master/src/assets/screengrab/screengrab.png`,
             dependencies: await getDependencies(ele)
