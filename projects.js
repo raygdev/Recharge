@@ -106,4 +106,4 @@ const usefulInfo = async () => {
     
 }
 
-export { repos, usefulInfo, usefulInformationArr }
+export { repos, usefulInfo }
