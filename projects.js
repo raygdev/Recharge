@@ -1,3 +1,4 @@
+import { getRepos, getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
 // import { Octokit } from "octokit";
 
 // const octokit = new Octokit({
@@ -15,7 +16,6 @@
 //    return res.data.filter(ele => !ele.archived)
 //   })
 
-import { getRepos, getLanguages, getDependencies } from './netlify/functions/fetchGithubAPI'
 
 const repos = getRepos()
 
