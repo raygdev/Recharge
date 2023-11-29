@@ -17,7 +17,7 @@ import { getRepos , getLanguages, getDependencies } from './netlify/functions/fe
 //   })
 
 
-const repos = await getRepos()
+const repos = getRepos()
 
 // async function getLanguages(ele){
 //     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
