@@ -70,6 +70,12 @@ function addTechNavListener(){
   })
 }
 
+function removeTechNavListener(){
+  document.querySelectorAll('.--tech-nav-link').forEach(item => {
+    item.removeEventListener('mouseenter', changeTechNavSelected)
+  })
+}
+
 function changeTechNavSelected(e){
   //when mouseenters any --tech-nav-link
   document.querySelectorAll('.--tech-nav-link').forEach(item =>{
@@ -263,6 +269,9 @@ function buildProjectsContainer(skill){
           skill == 'animate css' ? 'animate.css' : 
           skill == 'confettijs' ? 'confetti-js' : 
           skill == 'reactjs' ? 'react' : skill;
+  //disable tech nav buttons
+  removeTechNavListener()
+        
 
   //hide the skills container
   skillsContainerEl.classList.remove('expanded');
@@ -333,6 +342,9 @@ function buildProjectsContainer(skill){
 }
 
 function backToSkills(){
+  //add back the tech-nav listeners
+  addTechNavListener()
+
   //show the skills container
   projectInfoContainerEl.classList.remove('expanded');
   projectInfoContainerEl.classList.add('collapsed');

@@ -78,7 +78,6 @@ async function getDependencies(ele){
                 return ['html5', 'css', 'javascript', 'git']
             }
         })
-        console.log(dependecies)
         return dependecies;
     } catch (error) {
        console.log('im in the error')
