@@ -1,5 +1,6 @@
 // import { Octokit } from "octokit";
 import { App } from "octokit";
+
 // import { process } from '../../../env'
 
 // const octokit = new Octokit({
@@ -9,6 +10,8 @@ const app = new App({
   appId: process.env.App_ID,
   privateKey: process.env.Github_Access_API,
 });
+
+const octokit = await app.getInstallationOctokit(INSTALLATION_ID);
 
 export const getRepos = async (event) => {
   try {
