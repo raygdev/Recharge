@@ -7,7 +7,7 @@ import { App } from "octokit";
 //     auth: process.env.Github_Access_API
 //   })
 const app = new App({
-  appId: process.env.App_ID,
+  appId: 663453,
   privateKey: process.env.Github_Access_API,
 });
 
