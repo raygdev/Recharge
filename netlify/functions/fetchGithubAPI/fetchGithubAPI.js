@@ -11,7 +11,7 @@ const app = new App({
   privateKey: process.env.Github_Access_API,
 });
 
-const octokit = await app.getInstallationOctokit(INSTALLATION_ID);
+// const octokit = await app.getInstallationOctokit(INSTALLATION_ID);
 
 export const getRepos = async (event) => {
   try {
