@@ -1,12 +1,18 @@
 import { Octokit } from "octokit";
+import { App } from "octokit";
+import { process } from '../../../env'
 
-const octokit = new Octokit({
-    auth: process.env.Github_API
-  })
+// const octokit = new Octokit({
+//     auth: process.env.Github_Access_API
+//   })
+const app = new App({
+  appId: process.env.App_ID,
+  privateKey: process.env.Github_Access_API,
+});
 
 export const getRepos = async (event) => {
   try {
-    const repos = await octokit.request('GET /users/{username}/repos', {
+    const repos = await app.octokit.request('GET /users/{username}/repos', {
       username: 'RawleJuglal',
       per_page:100,
       headers: {
@@ -30,7 +36,7 @@ export const getRepos = async (event) => {
 
 export const getLanguages = async (event) => {
   try {
-    const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
+    const reservedWord =  await app.octokit.request('GET /repos/{username}/{repo}/languages', {
         username:'RawleJuglal',
         repo:event.name,
         headers: {
