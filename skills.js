@@ -2,19 +2,23 @@ import {nanoid} from 'nanoid';
 import { usefulInfo } from './projects';
 
 async function getLatestVersion(packageName){
-    /*Getting latest version of package*/
-    const versionNum = await fetch(`https://registry.npmjs.org/${packageName}/latest`)
-        .then(res => res.json())
-        .then(data => data.version)
-    return versionNum;
+  /*Getting latest version of package*/
+  const versionNum = await fetch(
+    `https://registry.npmjs.org/${packageName}/latest`
+  )
+      .then(res => res.json())
+      .then(data => data.version)
+  return versionNum;
 }
 
 async function fetchPopularity (skill){
-    /*Getting the popularity*/
-    let response = await fetch(` https://registry.npmjs.org/-/v1/search?text=${skill}`)
-    let data = await response.json()
-    let solution = await Math.ceil(data.objects[0].score.detail.popularity * 100)
-    return solution.toString()
+  /*Getting the popularity*/
+  let response = await fetch(
+    `https://registry.npmjs.org/-/v1/search?text=${skill}`
+  )
+  let data = await response.json()
+  let solution = Math.ceil(data.objects[0].score.detail.popularity * 100)
+  return solution.toString()
 }
 
 /**
