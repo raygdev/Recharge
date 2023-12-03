@@ -20,7 +20,6 @@ async function getLanguages(repoName) {
   return languages.reply
 }
 
-const repos = await getRepos()
 
 // async function getLanguages(ele){
 //     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
@@ -92,6 +91,7 @@ function decodeName(codedName){
 }
 
 const usefulInfo = async () => { 
+    const repos = await getRepos()
     let usefulInformationArr = repos.map(async ele => {
         return {
             id:ele.id,
@@ -107,6 +107,9 @@ const usefulInfo = async () => {
     return await Promise.all(usefulInformationArr)
 }
 
+const repoInfo = await usefulInfo()
+
+export {repoInfo as  usefulInfo }
 
 // import {  getLanguages } from './netlify/functions/fetchGithubAPI/fetchGithubAPI.cjs'
 // import { Octokit } from "octokit";
