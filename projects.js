@@ -1,9 +1,6 @@
 import { getRepos , getLanguages } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
-// import { Octokit } from "octokit";
+import { BASE_URL } from "./baseURL"
 
-// const octokit = new Octokit({
-//     auth: process.env.Github_API
-//   })
 
 // const repos = await octokit.request('GET /users/{username}/repos', {
 //     username: 'RawleJuglal',
@@ -111,4 +108,34 @@ const usefulInfo = async () => {
     
 }
 
-export { repos, usefulInfo }
+
+// import {  getLanguages } from './netlify/functions/fetchGithubAPI/fetchGithubAPI.cjs'
+// import { Octokit } from "octokit";
+
+// const octokit = new Octokit({
+//     auth: process.env.Github_API
+//   })
+
+// const repos = await octokit.request('GET /users/{username}/repos', {
+//     username: 'RawleJuglal',
+//     per_page:100,
+//     headers: {
+//       'X-GitHub-Api-Version': '2022-11-28'
+//     }
+//   })
+//   .then(res => {
+//    return res.data.filter(ele => !ele.archived)
+//   })
+
+// const repos = await getRepos()
+
+// async function getLanguages(ele){
+//     const reservedWord =  await octokit.request('GET /repos/{username}/{repo}/languages', {
+//         username:'RawleJuglal',
+//         repo:ele.name,
+//         headers: {
+//             'X-GitHub-Api-Version': '2022-11-28'
+//         }
+//     })
+//     return reservedWord.data
+// }
