@@ -1,8 +1,6 @@
 import { app } from "../../../octokitConfig.js"
 
-
 export const handler = async event => {
-
   try {
     const repoName = event.queryStringParameters?.reponame
 
@@ -34,7 +32,6 @@ export const handler = async event => {
       // isBase64Encoded: true,
     }
   } catch (error) {
-
     return { statusCode: 500, body: error.toString() }
   }
 }
