@@ -80,4 +80,13 @@ const skillsCollection = async () => {
     
 }
 
-export { skillsCollection }
+//skills is the awaited value of skillsCollection
+//no need to chain a .then
+const skills = await skillsCollection()
+
+/**
+ * export skills as skillsCollection
+ * skills is now the value of the resolved
+ * array and can be used in other files.
+ */
+export { skills as skillsCollection }
