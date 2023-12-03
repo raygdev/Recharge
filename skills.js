@@ -17,16 +17,28 @@ async function fetchPopularity (skill){
     return solution.toString()
 }
 
-async function calculateNumberOfProjects(skill){
-    return usefulInfo().then(data => {
-       const selectedProjects =  data.filter(ele => {
-            // console.log(ele.dependencies)
-            if(ele.dependencies.includes(skill)){
-                return ele
-            }
-        })
-        return selectedProjects.length
+/**
+ * 
+ * since calculateNumberOfPorjects is no longer async,
+ * we can just call it in the skillsArrayOfObjects instead
+ * of awaiting it. 
+ */
+
+function calculateNumberOfProjects(skill){
+    /**
+     * Useful info is now the awaited value from the file.
+     * 
+     * this function was calling it 20 times because it was
+     * being used in skillsCollection. That doesn't account
+     * for the other 3-6 times it was being called as well.
+     */
+    const selectedProjects =  usefulInfo.filter(ele => {
+        // console.log(ele.dependencies)
+        if(ele.dependencies.includes(skill)){
+             return ele
+        }
     })
+    return selectedProjects.length
 }
 
 
