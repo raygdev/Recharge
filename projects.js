@@ -1,17 +1,13 @@
-import { getRepos , getLanguages } from './netlify/functions/fetchGithubAPI/fetchGithubAPI'
 import { BASE_URL } from "./baseURL"
 
 
-// const repos = await octokit.request('GET /users/{username}/repos', {
-//     username: 'RawleJuglal',
-//     per_page:100,
-//     headers: {
-//       'X-GitHub-Api-Version': '2022-11-28'
-//     }
-//   })
-//   .then(res => {
-//    return res.data.filter(ele => !ele.archived)
-//   })
+async function getRepos() {
+  const res = await fetch(
+    `${BASE_URL}/.netlify/functions/fetchGithubRepos`
+  )
+  const data = await res.json()
+  return data.reply
+}
 
 
 const repos = await getRepos()
