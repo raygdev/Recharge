@@ -7,9 +7,6 @@ import { app } from "../../../octokitConfig.js"
  * -- handler has to be the name of the exported function
  *    this is what netlify looks for when creating a lambda
  *    function
- * 
- * 
- * 
  */
 export const handler = async (event) => {
   //the rest of this code should be familiar to you
@@ -27,12 +24,12 @@ export const handler = async (event) => {
          * changed it to repo since that's what the 
          * value is
          */
-        return response.data.filter(repo => !repo.archived)
+        return {data: response.data.filter(repo => !repo.archived), headers: response.headers}
       })
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: repos })
+      body: JSON.stringify({ reply: repos.data, headers: repos.headers })
     }
   } catch(e) {
     console.log(e)
